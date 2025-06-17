@@ -14,3 +14,26 @@ export const registerUser = async (req,res) => {
         return errorResponse(error, res);
     }
 };
+
+export const login = async(req, res) => {
+    try{
+        const {token, user} = await UserService.login({
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password
+        });
+
+        res.cookie("token", token, {
+            maxAge: 1000*60*60,
+            httpOnly: true,
+        });
+        return successResponse(
+            { user : { id: user._id, email: user.email,username:user.username}},
+            StatusCodes.OK, 
+            "User signed in successfully", 
+            res);
+
+    } catch(error){
+        errorResponse(error,res);
+    }
+};
