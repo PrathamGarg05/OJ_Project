@@ -4,6 +4,12 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/jwtUtils.js';
 
 export const register = async ({username, email, password}) => {
+    if(await UserRepo.findUserByUsername(username)){
+        throw{
+            message: "Username taken",
+            status: StatusCodes.BAD_REQUEST
+        };
+    }
     const existingUser = await UserRepo.findUserByEmail(email);
     if(existingUser){
         throw{
@@ -40,4 +46,9 @@ export const login = async ({username, email, password}) => {
         token, 
         user : {id:user._id, email: user.email, username: user.username}
     };
+};
+
+export const myProfile = async(email) => {
+    const user = await UserRepo.findUserByEmail(email);
+    return user;
 };

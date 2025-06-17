@@ -37,3 +37,16 @@ export const login = async(req, res) => {
         errorResponse(error,res);
     }
 };
+
+export const myProfile = async(req,res) => {
+    try{
+        const user = await UserService.myProfile(req.user.email);
+        return successResponse(
+            {user : {id: user._id, username: user.username, email: user.email}},
+            StatusCodes.OK,
+            "Successfully fetched user details",
+            res);
+    } catch(error){
+        errorResponse(error,res);
+    }
+};

@@ -20,3 +20,13 @@ export const findUserByEmail = async (email) => {
         throw error;
     }
 };
+
+export const findUserByUsername = async (username) => {
+    try{
+        const user = await User.findOne({username});
+        return user;
+    }
+    catch (error){
+        throw error;
+    }
+};
