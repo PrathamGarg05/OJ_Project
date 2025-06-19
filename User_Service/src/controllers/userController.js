@@ -7,7 +7,8 @@ export const registerUser = async (req,res) => {
         const response = await UserService.register({
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            role: req.body.role
         });
         return successResponse(response, StatusCodes.CREATED, "User registered successfully", res);
     } catch(error){
@@ -20,7 +21,7 @@ export const login = async(req, res) => {
         const {token, user} = await UserService.login({
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
         });
 
         res.cookie("token", token, {
@@ -28,7 +29,7 @@ export const login = async(req, res) => {
             httpOnly: true,
         });
         return successResponse(
-            { user : { id: user._id, email: user.email,username:user.username}},
+            { user : { id: user._id, email: user.email,username:user.username, role: user.role}},
             StatusCodes.OK, 
             "User signed in successfully", 
             res);
@@ -48,5 +49,14 @@ export const myProfile = async(req,res) => {
             res);
     } catch(error){
         errorResponse(error,res);
+    }
+};
+
+export const getAllUsers = async(req,res) => {
+    try{
+        const users = await UserService.getAllUsers();
+        return successResponse(users, StatusCodes.OK, "Fetched all users", res);
+    }catch(error){
+        return errorResponse(error, res);
     }
 };

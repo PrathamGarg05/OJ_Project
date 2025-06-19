@@ -1,9 +1,9 @@
 import { User } from "../models/User.js";
 
-export const register = async ({username,password,email}) => {
+export const register = async ({username,password,email,role}) => {
     try{
         const user = await User.create({
-            username, password, email
+            username, password, email, role
         });
         return user;
     } catch(error){
@@ -27,6 +27,15 @@ export const findUserByUsername = async (username) => {
         return user;
     }
     catch (error){
+        throw error;
+    }
+};
+
+export const getAllUsers = async() => {
+    try{
+        const users = await User.find({}, {username: 1, email: 1, role: 1});
+        return users;
+    } catch(error){
         throw error;
     }
 };
