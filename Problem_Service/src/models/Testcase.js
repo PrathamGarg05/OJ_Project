@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Problem } from "./Problem";
+import { Problem } from "./Problem.js";
 
 const TestcaseSchema = new mongoose.Schema({
     problem: {
@@ -13,6 +13,10 @@ const TestcaseSchema = new mongoose.Schema({
     },
     output: {
         type: String,
+        required: true
+    },
+    isSample: {
+        type: Boolean,
         required: true
     }
 });
