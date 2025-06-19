@@ -40,3 +40,22 @@ export const getProblemById = async(problemId) => {
         throw error;
     }
 };
+
+export const updateProblem = async(problemId, newData) => {
+    try{
+        const problem = await Problem.findByIdAndUpdate(
+            problemId,
+            newData,
+            {new: true}
+        );
+        if(!problem){
+            throw {
+                message: "Problem doesn't exist",
+                status: StatusCodes.BAD_REQUEST
+            };
+        }
+        return problem;
+    } catch(error){
+        throw error;
+    }
+};

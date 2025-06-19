@@ -28,3 +28,15 @@ export const getProblem = async (req, res) => {
         return errorResponse(error, res);
     }
 };
+
+export const updateProblem = async(req,res) => {
+    try{
+        const response = await ProblemService.updateProblem(
+            req.params.id, 
+            req.body
+        );
+        return successResponse(response, StatusCodes.OK, "Problem updated", res);
+    } catch(error){
+        return errorResponse(error,res);
+    }
+};

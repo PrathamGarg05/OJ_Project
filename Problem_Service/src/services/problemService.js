@@ -14,11 +14,13 @@ export const getProblems = async() => {
     return problems;
 };
 
-export const getProblem = async(problemId) => {
-    try{
-        const problem = await ProblemRepo.getProblemById(problemId);
-        return problem;
-    } catch(error){
-        throw error;
-    }
+export const getProblem = async(problemId) => {   
+    const problem = await ProblemRepo.getProblemById(problemId);
+    return problem;
+};
+
+export const updateProblem = async(problemId, newData) => {
+    if(newData.description) newData.description = sanitizeMarkdown(newData.description);
+    const problem = await ProblemRepo.updateProblem(problemId, newData);
+    return problem;
 };

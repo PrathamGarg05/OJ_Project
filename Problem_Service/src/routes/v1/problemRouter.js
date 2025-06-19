@@ -9,4 +9,6 @@ problemRouter.get('/', ProblemController.getProblems);
 
 problemRouter.get('/:id', ProblemController.getProblem);
 
+problemRouter.put('/:id', ProblemController.updateProblem);
+
 export default problemRouter;
