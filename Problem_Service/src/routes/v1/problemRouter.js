@@ -7,4 +7,6 @@ problemRouter.post('/',ProblemController.createProblem);
 
 problemRouter.get('/', ProblemController.getProblems);
 
+problemRouter.get('/:id', ProblemController.getProblem);
+
 export default problemRouter;

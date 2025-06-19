@@ -13,3 +13,12 @@ export const getProblems = async() => {
     
     return problems;
 };
+
+export const getProblem = async(problemId) => {
+    try{
+        const problem = await ProblemRepo.getProblemById(problemId);
+        return problem;
+    } catch(error){
+        throw error;
+    }
+};

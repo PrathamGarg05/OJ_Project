@@ -19,3 +19,12 @@ export const getProblems = async(req,res) => {
         return errorResponse(error, res);
     }
 };
+
+export const getProblem = async (req, res) => {
+    try{
+        const response = await ProblemService.getProblem(req.params.id);
+        return successResponse(response, StatusCodes.OK, 'Problem fetched', res); 
+    } catch(error) {
+        return errorResponse(error, res);
+    }
+};
