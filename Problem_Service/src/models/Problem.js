@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const ProblemSchema = new mongoose.Schema({
     title : {
         type: String,
-        required: [true, 'Title cannot be empty']
+        required: [true, 'Title cannot be empty'],
+        unique: true
      },
      description: {
         type: String,
