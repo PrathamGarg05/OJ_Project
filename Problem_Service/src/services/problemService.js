@@ -24,3 +24,8 @@ export const updateProblem = async(problemId, newData) => {
     const problem = await ProblemRepo.updateProblem(problemId, newData);
     return problem;
 };
+
+export const deleteProblem = async(problemId) => {
+    const problem = await ProblemRepo.deleteProblem(problemId);
+    return problem;
+};

@@ -59,3 +59,18 @@ export const updateProblem = async(problemId, newData) => {
         throw error;
     }
 };
+
+export const deleteProblem = async(problemId) => {
+    try{
+        const problem = await Problem.findByIdAndDelete(problemId);
+        if(!problem){
+            throw {
+                message: "Problem doesn't exist",
+                status: StatusCodes.BAD_REQUEST
+            };
+        }
+        return problem;
+    } catch(error){
+        throw error;
+    }
+};
