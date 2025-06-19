@@ -64,3 +64,16 @@ export const deleteTestcase = async(tcId) => {
         throw error;
     }
 };
+
+export const getSampleTC = async(problemId) => {
+    try{
+        const problem = await getProblemById(problemId);
+        const testcases = await Testcase.find({
+            problem: problemId,
+            isSample: true
+        });
+        return testcases;
+    } catch(error) {
+        throw error;
+    }
+};

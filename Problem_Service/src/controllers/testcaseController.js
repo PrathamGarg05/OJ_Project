@@ -47,3 +47,14 @@ export const deleteTestcase = async(req,res) => {
         return errorResponse(error, res);
     }
 };
+
+export const getSampleTestcase = async (req,res) => {
+    try{
+        const response = await testcaseService.getSampleTestcase(
+            req.params.id
+        );
+        return successResponse(response, StatusCodes.OK, "testcases fetched", res);
+    } catch(error){
+        return errorResponse(error, res);
+    }
+};

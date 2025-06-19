@@ -19,3 +19,8 @@ export const deleteTestcase = async(tcId) => {
     const testcase = await testcaseRepo.deleteTestcase(tcId);
     return testcase;
 };
+
+export const getSampleTestcase = async(problemId) => {
+    const testcases= await testcaseRepo.getSampleTC(problemId);
+    return testcases;
+};

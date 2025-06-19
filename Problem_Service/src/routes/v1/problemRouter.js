@@ -18,4 +18,7 @@ problemRouter.post('/:id/testcases', testcaseController.addTestcase);
 
 problemRouter.get('/:id/testcases', testcaseController.getAllTestcase);
 
+problemRouter.get('/:id/testcases/sample', testcaseController.getSampleTestcase);
+
+
 export default problemRouter;
