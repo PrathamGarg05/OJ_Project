@@ -3,7 +3,7 @@ import * as UserRepo from '../repositories/UserRepo.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/jwtUtils.js';
 
-export const register = async ({username, email, password}) => {
+export const register = async ({username, email, password, role}) => {
     if(await UserRepo.findUserByUsername(username)){
         throw{
             message: "Username taken",
@@ -17,7 +17,7 @@ export const register = async ({username, email, password}) => {
             status: StatusCodes.BAD_REQUEST
         };
     }
-    const user = await UserRepo.register({username, email, password});
+    const user = await UserRepo.register({username, email, password, role});
     return user;
 };
 
@@ -44,11 +44,16 @@ export const login = async ({username, email, password}) => {
     // attach the token with user
     return{
         token, 
-        user : {id:user._id, email: user.email, username: user.username}
+        user : {id:user._id, email: user.email, username: user.username, role: user.role}
     };
 };
 
 export const myProfile = async(email) => {
     const user = await UserRepo.findUserByEmail(email);
     return user;
+};
+
+export const getAllUsers = async() => {
+    const users = await UserRepo.getAllUsers();
+    return users;
 };
