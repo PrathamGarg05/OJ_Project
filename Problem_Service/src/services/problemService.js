@@ -13,3 +13,19 @@ export const getProblems = async() => {
     
     return problems;
 };
+
+export const getProblem = async(problemId) => {   
+    const problem = await ProblemRepo.getProblemById(problemId);
+    return problem;
+};
+
+export const updateProblem = async(problemId, newData) => {
+    if(newData.description) newData.description = sanitizeMarkdown(newData.description);
+    const problem = await ProblemRepo.updateProblem(problemId, newData);
+    return problem;
+};
+
+export const deleteProblem = async(problemId) => {
+    const problem = await ProblemRepo.deleteProblem(problemId);
+    return problem;
+};
