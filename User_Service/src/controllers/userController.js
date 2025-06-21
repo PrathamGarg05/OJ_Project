@@ -10,7 +10,9 @@ export const registerUser = async (req,res) => {
             password: req.body.password,
             role: req.body.role
         });
-        return successResponse(response, StatusCodes.CREATED, "User registered successfully", res);
+        return successResponse({
+            user : {id: response._id, email: response.email, username: response.username, role: response.role}
+        }, StatusCodes.CREATED, "User registered successfully", res);
     } catch(error){
         return errorResponse(error, res);
     }

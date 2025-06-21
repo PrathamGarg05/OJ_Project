@@ -1,8 +1,8 @@
-import LoginForm from "../../components/AuthForm/LoginForm";
+import AuthForm from "../../components/AuthForm/AuthForm";
 
 function LoginPage(){
     return(
-        <LoginForm />
+        <AuthForm />
     )
 }
 
