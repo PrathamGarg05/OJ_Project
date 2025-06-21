@@ -2,8 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
 export const authenticateToken = (JWT_SECRET) => (req,res,next) => {
-    const token = req.headers.authorization?.split(' ')[1];
-    
+    // const token = req.headers.authorization?.split(' ')[1];
+
+    const token = req.cookies.token;
+
     //if no token given
     if(!token){
         return res.status(StatusCodes.UNAUTHORIZED).json({

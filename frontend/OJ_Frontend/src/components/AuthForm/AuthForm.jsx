@@ -2,7 +2,7 @@ import { useState } from "react";
 import TextInput from "../TextInput/TextInput";
 import { login, register } from "../../services/auth";
 import Button from "../Buttons/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function AuthForm({type = 'login'}) {
 
@@ -10,6 +10,8 @@ function AuthForm({type = 'login'}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [cnfPassword, setCnfPassword] = useState('');
+
+    const navigate = useNavigate();
 
     async function onSubmitHandler(e) {
         e.preventDefault();
@@ -28,6 +30,7 @@ function AuthForm({type = 'login'}) {
                 const res = await login({email, password});
                 console.log("Login successful" , res.data);
             }
+            navigate('/problems');
             
         } catch(error){
             console.log(`${type=='login' ? 'Login Failed' : 'Registration Failed'}`, error.message);
