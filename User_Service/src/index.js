@@ -1,8 +1,12 @@
 import express from 'express';
 import connectDB from './config/dbConfig.js';
 import apiRouter from './routes/apiRouter.js';
+import { PORT } from './config/serverConfig.js';
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use(express.raw());
@@ -17,7 +21,7 @@ app.get('/ping', (req,res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log(`Server running at port 3000`);
+app.listen(PORT, () => {
+    console.log(`Server running at port ${PORT}`);
     connectDB();
 });

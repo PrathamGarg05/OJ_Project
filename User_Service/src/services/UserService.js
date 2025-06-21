@@ -21,7 +21,7 @@ export const register = async ({username, email, password, role}) => {
     return user;
 };
 
-export const login = async ({username, email, password}) => {
+export const login = async ({ email, password}) => {
     const user = await UserRepo.findUserByEmail(email);
     if(!user){
         throw{
