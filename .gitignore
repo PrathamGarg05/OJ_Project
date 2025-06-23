@@ -13,3 +13,5 @@
 
 # IDE settings
 .vscode/
+
+**/dist/
