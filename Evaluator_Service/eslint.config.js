@@ -1,25 +1,16 @@
-// eslint.config.js
-import eslintJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import prettier from 'eslint-config-prettier';
-
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**'],
+    ignores: ["node_modules/**", "dist/**", "build/**"],
   },
-  // eslintJs.configs.recommended,
-  // ...tseslint.configs.recommended,
   {
-    files: ['**/*.ts'],
+    files: ["src/**/*.js"],
     languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        project: './tsconfig.json',
-      },
+      ecmaVersion: "latest",
+      sourceType: "module",
     },
     rules: {
-      "semi": ["error", "always"],
+      semi: ["error", "always"],
+      // your other rules...
     },
   },
-  prettier, // disables conflicting formatting rules
 ];
