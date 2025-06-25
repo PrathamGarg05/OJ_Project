@@ -3,10 +3,13 @@ import Docker from "dockerode";
 import createContainer from "./containerFactory.js";
 import { PYTHON_IMAGE } from "../utils/constants.js";
 import decodeDockerStream from "./dockerHelper.js";
+import pullImage from "./pullImage.js";
 
 async function runPython(code, sampleInput, sampleOutput){
 
     const rawLogBuffer = [];
+
+    await pullImage(PYTHON_IMAGE);
 
     const pythonDocker = await createContainer(PYTHON_IMAGE, ['sh', '-c', `echo '${code.replace(/'/g, `\\"`)}' > test.py && echo "${sampleInput}" | python3 test.py`]);
 

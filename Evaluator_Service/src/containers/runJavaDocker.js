@@ -3,10 +3,13 @@ import Docker from "dockerode";
 import createContainer from "./containerFactory.js";
 import decodeDockerStream from "./dockerHelper.js";
 import { JAVA_IMAGE } from "../utils/constants.js";
+import pullImage from "./pullImage.js";
 
 async function runJava(code, sampleInput, sampleOutput){
 
     const rawLogBuffer = [];
+
+    await pullImage(JAVA_IMAGE);
 
     const javaDocker = await createContainer(JAVA_IMAGE, 
         ['sh', 

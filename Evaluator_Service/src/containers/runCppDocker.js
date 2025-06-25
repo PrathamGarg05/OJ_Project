@@ -3,10 +3,13 @@ import Docker from "dockerode";
 import createContainer from "./containerFactory.js";
 import decodeDockerStream from "./dockerHelper.js";
 import { CPP_IMAGE} from "../utils/constants.js";
+import pullImage from "./pullImage.js";
 
 async function runCpp(code, sampleInput, sampleOutput){
 
     const rawLogBuffer = [];
+
+    await pullImage(CPP_IMAGE);
 
     const cppDocker = await createContainer(CPP_IMAGE, 
         ['sh', 
