@@ -7,6 +7,9 @@ import apiRouter from './routes/apiRouter.js';
 import runPython from './containers/runPythonDocker.js';
 import runJava from './containers/runJavaDocker.js';
 import runCpp from './containers/runCppDocker.js';
+import SubmissionWorker from './workers/submissionWorker.js';
+import { submission_queue } from './utils/constants.js';
+import submissionQueueProducer from './producers/submissionQueueProducer.js';
 
 const app = express();
 app.use('/ui', bullBoardAdapter.getRouter());
@@ -24,25 +27,7 @@ app.listen(PORT, ()=> {
     console.log(`BullBoard dashboard running on
         http://localhost:${PORT}/ui`);
 
-    SampleQueueProducer('SampleJob', {
-        name: "Pratham",
-        company: "ABC"
-    });
-
-    SampleWorker("SampleQueue");
-
-    const Javacode = `
-    import java.util.*;
-    public class Main{
-        public static void main(String args[]) {
-            Scanner sc = new Scanner(System.in);
-            int input = sc.nextInt();
-            System.out.println("Input is "+input);
-        }
-    }
-    `;
-
-    const cppCode = `
+    const code = `
     #include<iostream>
     using namespace std;
 
@@ -55,5 +40,26 @@ app.listen(PORT, ()=> {
         }
     }
     `;
-    runCpp(cppCode, `5`,10);
+
+    const input = `5`;
+
+    submissionQueueProducer({
+        "1234" : {
+            language: "CPP",
+            code: code,
+            input: input
+        }
+    });
+    SubmissionWorker(submission_queue);
+
+    const Javacode = `
+    import java.util.*;
+    public class Main{
+        public static void main(String args[]) {
+            Scanner sc = new Scanner(System.in);
+            int input = sc.nextInt();
+            System.out.println("Input is "+input);
+        }
+    }
+    `;
 });
