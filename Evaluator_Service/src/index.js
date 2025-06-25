@@ -5,6 +5,7 @@ import SampleWorker from './workers/SampleWorker.js';
 import bullBoardAdapter from './config/bullBoardConfig.js';
 import apiRouter from './routes/apiRouter.js';
 import runPython from './containers/runPythonDocker.js';
+import runJava from './containers/runJavaDocker.js';
 
 const app = express();
 app.use('/ui', bullBoardAdapter.getRouter());
@@ -30,10 +31,14 @@ app.listen(PORT, ()=> {
     SampleWorker("SampleQueue");
 
     const code = `
-x = input()
-y = input()
-print("value of x is", x)
-print("y is" , y)
-`;
-    runPython(code, `100\n10`,10);
+    import java.util.*;
+    public class Main{
+        public static void main(String args[]) {
+            Scanner sc = new Scanner(System.in);
+            int input = sc.nextInt();
+            System.out.println("Input is "+input);
+        }
+    }
+    `;
+    runJava(code, `100`,10);
 });
