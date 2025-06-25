@@ -6,6 +6,7 @@ import bullBoardAdapter from './config/bullBoardConfig.js';
 import apiRouter from './routes/apiRouter.js';
 import runPython from './containers/runPythonDocker.js';
 import runJava from './containers/runJavaDocker.js';
+import runCpp from './containers/runCppDocker.js';
 
 const app = express();
 app.use('/ui', bullBoardAdapter.getRouter());
@@ -30,7 +31,7 @@ app.listen(PORT, ()=> {
 
     SampleWorker("SampleQueue");
 
-    const code = `
+    const Javacode = `
     import java.util.*;
     public class Main{
         public static void main(String args[]) {
@@ -40,5 +41,19 @@ app.listen(PORT, ()=> {
         }
     }
     `;
-    runJava(code, `100`,10);
+
+    const cppCode = `
+    #include<iostream>
+    using namespace std;
+
+    int main(){
+        int x;
+        cin>>x;
+        cout<<"Value of x is "<<x<<endl;
+        for(int i=0;i<x;i++){
+        cout<<i<<"  ";
+        }
+    }
+    `;
+    runCpp(cppCode, `5`,10);
 });
