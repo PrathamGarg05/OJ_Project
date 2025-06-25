@@ -4,6 +4,7 @@ import SampleQueueProducer from './producers/SampleQueueProducer.js';
 import SampleWorker from './workers/SampleWorker.js';
 import bullBoardAdapter from './config/bullBoardConfig.js';
 import apiRouter from './routes/apiRouter.js';
+import runPython from './containers/runPythonDocker.js';
 
 const app = express();
 app.use('/ui', bullBoardAdapter.getRouter());
@@ -27,4 +28,12 @@ app.listen(PORT, ()=> {
     });
 
     SampleWorker("SampleQueue");
+
+    const code = `
+x = input()
+y = input()
+print("value of x is", x)
+print("y is" , y)
+`;
+    runPython(code, `100\n10`,10);
 });
