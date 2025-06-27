@@ -1,12 +1,7 @@
 import express from 'express';
 import { PORT } from './config/serverConfig.js';
-import SampleQueueProducer from './producers/SampleQueueProducer.js';
-import SampleWorker from './workers/SampleWorker.js';
 import bullBoardAdapter from './config/bullBoardConfig.js';
 import apiRouter from './routes/apiRouter.js';
-import runPython from './containers/runPythonDocker.js';
-import runJava from './containers/runJavaDocker.js';
-import runCpp from './containers/runCppDocker.js';
 import SubmissionWorker from './workers/submissionWorker.js';
 import { submission_queue } from './utils/constants.js';
 import submissionQueueProducer from './producers/submissionQueueProducer.js';
@@ -42,12 +37,14 @@ app.listen(PORT, ()=> {
     `;
 
     const input = `5`;
+    const output = `5`;
 
     submissionQueueProducer({
         "1234" : {
             language: "CPP",
             code: code,
-            input: input
+            input: input,
+            output: output
         }
     });
     SubmissionWorker(submission_queue);
