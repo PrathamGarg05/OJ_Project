@@ -4,18 +4,25 @@ import createContainer from "./containerFactory.js";
 import decodeDockerStream from "./dockerHelper.js";
 import { JAVA_IMAGE } from "../utils/constants.js";
 import pullImage from "./pullImage.js";
+import { outputMatcher } from "../utils/outputMatcher.js";
 
 class JavaExecutor {
-    execute = async(code, sampleInput, sampleOutput) => {
+    execute = async(code, testcases) => {
         const rawLogBuffer = [];
 
         await pullImage(JAVA_IMAGE);
 
+        let script = `echo '${code.replace(/'/g, `\\"`)}' > Main.java && javac Main.java && `;
+
+        testcases.forEach((tc) => {
+            script += `echo '${tc.input}' | java Main; echo '---'\n`;
+        });
+
         const javaDocker = await createContainer(JAVA_IMAGE, 
             ['sh', 
             '-c', 
-            `echo '${code.replace(/'/g, `\\"`)}' > Main.java && javac Main.java && echo "${sampleInput}" | java Main`]
-        );
+            script
+        ]);
 
         await javaDocker.start();
 
@@ -47,7 +54,15 @@ class JavaExecutor {
                     res(decodeStream.stdout);
                 });
             });
-            return {output: codeResponse, status: "Completed"};
+            const {results, verdict} = outputMatcher(codeResponse, testcases);
+            
+            console.log("Results:", results);
+    
+            return {
+                status: 'Completed',
+                verdict: verdict,
+                results
+            };
         } catch(err){
             return {ouput: err, status: "Failed"};
         } finally{

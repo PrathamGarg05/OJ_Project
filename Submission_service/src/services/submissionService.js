@@ -11,6 +11,6 @@ export const addSubmission = async(submissionData) => {
         throw {message : "Unable to create submission"}
     }
 
-    const response = await submissionQueueProducer(submissionData);
+    const response = await submissionQueueProducer(submission);
     return {submission, queueResponse : response};
 }

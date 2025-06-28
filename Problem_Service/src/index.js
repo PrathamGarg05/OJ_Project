@@ -1,6 +1,7 @@
 import express from 'express';
 import { API_GATEWAY, PORT } from './config/serverConfig.js';
 import apiRouter from './routes/apiRouter.js';
+import internalRouter from './routes/internalRoute.js';
 import { connectDB } from './config/dbConfig.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -24,6 +25,7 @@ app.use(express.text());
 
 
 app.use('/api', apiRouter);
+app.use('/internal-api', internalRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running at Port ${PORT}`);

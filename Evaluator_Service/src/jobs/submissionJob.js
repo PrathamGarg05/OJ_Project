@@ -1,5 +1,6 @@
 import createExecutor from "../utils/ExecutorFactory.js";
 import evaluationQueueProducer from "../producers/evaluationQueueProducer.js";
+import { getTestcases } from "../utils/fetchTestcases.js";
 export default class SubmissionJob{
     name;
     payload;
@@ -12,17 +13,15 @@ export default class SubmissionJob{
         console.log(this.payload);
         if(job) {
             const userId = this.payload.userId;
-            const submissionId = this.payload.submissionId;
+            const submissionId = this.payload._id;
             const language = this.payload.language;
-            console.log(language);
             const code = this.payload.code;
-            const input = this.payload.input;
-            const output = this.payload.output;
+            const testcases = await getTestcases(this.payload.problemId);
             const strategy = createExecutor(language);
             if(strategy != null) {
-                const response = await strategy.execute(code,input,output);
-                evaluationQueueProducer({response, userId: userId, submissionId: submissionId});
-                if(response.status == "SUCCESS") {
+                const response = await strategy.execute(code,testcases.data);
+                evaluationQueueProducer({verdict: response.verdict, userId: userId, submissionId: submissionId});
+                if(response.status == "Completed") {
                     console.log("Code executed successfully");
                     console.log(response);
                 } else {

@@ -6,3 +6,4 @@ export const PORT = process.env.PORT || 4000;
 export const MONGO_URL = process.env.MONGO_URL;
 export const JWT_SECRET = process.env.JWT_SECRET;
 export const API_GATEWAY = process.env.API_GATEWAY;
+export const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;

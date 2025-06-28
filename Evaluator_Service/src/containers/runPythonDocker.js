@@ -4,14 +4,25 @@ import createContainer from "./containerFactory.js";
 import { PYTHON_IMAGE } from "../utils/constants.js";
 import decodeDockerStream from "./dockerHelper.js";
 import pullImage from "./pullImage.js";
+import { outputMatcher } from "../utils/outputMatcher.js";
 
 class PythonExecutor {
-    execute = async(code, sampleInput, sampleOutput) => {
+    execute = async(code, testcases) => {
         const rawLogBuffer = [];
 
         await pullImage(PYTHON_IMAGE);
 
-        const pythonDocker = await createContainer(PYTHON_IMAGE, ['sh', '-c', `echo '${code.replace(/'/g, `\\"`)}' > test.py && echo "${sampleInput}" | python3 test.py`]);
+        let script = `echo '${code.replace(/'/g, `\\"`)}' > test.py && `;
+
+        testcases.forEach((tc) => {
+            script += `echo '${tc.input}' | python3 test.py; echo '---'\n`;
+        });
+
+        const pythonDocker = await createContainer(PYTHON_IMAGE, [
+            'sh',
+            '-c',
+            script
+        ]);
 
         await pythonDocker.start();
 
@@ -43,7 +54,15 @@ class PythonExecutor {
                     res(decodeStream.stdout);
                 });
             });
-            return {output: codeResponse, status: "Completed"};
+            const {results, verdict} = outputMatcher(codeResponse, testcases);
+            
+            console.log("Results:", results);
+    
+            return {
+                status: 'Completed',
+                verdict: verdict,
+                results
+            };
         } catch(err){
             return {ouput: err, status: "Failed"};
         } finally{

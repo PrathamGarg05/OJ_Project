@@ -4,17 +4,25 @@ import createContainer from "./containerFactory.js";
 import decodeDockerStream from "./dockerHelper.js";
 import { CPP_IMAGE} from "../utils/constants.js";
 import pullImage from "./pullImage.js";
+import { outputMatcher } from "../utils/outputMatcher.js";
 
 class CppExecutor {
-    execute = async(code, sampleInput, sampleOutput) => {
+    execute = async(code,testcases) => {
         const rawLogBuffer = [];
 
         await pullImage(CPP_IMAGE);
 
+        let script = `echo '${code.replace(/'/g, `\\"`)}' > main.cpp && g++ main.cpp -o main
+        `;
+
+        testcases.forEach((tc, i) => {
+            script += `echo '${tc.input}' | ./main; echo '---'\n`;
+        });
+
         const cppDocker = await createContainer(CPP_IMAGE, 
             ['sh', 
             '-c', 
-            `echo '${code.replace(/'/g, `\\"`)}' > main.cpp && g++ main.cpp -o main && echo "${sampleInput}" | ./main`]
+            script]
         );
 
         await cppDocker.start();
@@ -36,20 +44,29 @@ class CppExecutor {
         try{
             const codeResponse = await new Promise((res, rej) => {
                 loggerStream.on('end', () => {
-                    console.log(rawLogBuffer);
                     const completeBuffer = Buffer.concat(rawLogBuffer);
                     const decodeStream = decodeDockerStream(completeBuffer);
                     console.log(decodeStream);
-                    console.log(decodeStream.stdout);
                     if(decodeStream.stderr){
                         rej(decodeStream.stderr);
                     }
                     res(decodeStream.stdout);
                 });
             });
-            return {output: codeResponse, status: "Completed"};
+            console.log("Full Raw Output:\n", codeResponse);
+
+        const {results, verdict} = outputMatcher(codeResponse, testcases);
+
+        console.log("Results:", results);
+
+        return {
+            status: 'Completed',
+            verdict: verdict,
+            results
+        };
+
         } catch(err){
-            return {ouput: err, status: "Failed"};
+            return {output: err, status: "Failed"};
         } finally{
             await cppDocker.remove();
         }
