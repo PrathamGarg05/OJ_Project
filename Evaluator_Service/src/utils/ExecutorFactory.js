@@ -3,11 +3,11 @@ import JavaExecutor from "../containers/runJavaDocker.js";
 import PythonExecutor from "../containers/runPythonDocker.js";
 
 export default function createExecutor (language) {
-    if(language == "CPP") {
+    if(language.toUpperCase() == "CPP") {
         return new CppExecutor();
-    } else if(language == "Java") {
+    } else if(language.toUpperCase() == "JAVA") {
         return new JavaExecutor();
-    } else if(language == "Python") {
+    } else if(language.toUpperCase() == "PYTHON") {
         return new PythonExecutor();
     }
 }

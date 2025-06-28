@@ -39,14 +39,14 @@ app.listen(PORT, ()=> {
     const input = `5`;
     const output = `5`;
 
-    submissionQueueProducer({
-        "1234" : {
-            language: "CPP",
-            code: code,
-            input: input,
-            output: output
-        }
-    });
+    // submissionQueueProducer({
+    //     "1234" : {
+    //         language: "CPP",
+    //         code: code,
+    //         input: input,
+    //         output: output
+    //     }
+    // });
     SubmissionWorker(submission_queue);
 
     const Javacode = `

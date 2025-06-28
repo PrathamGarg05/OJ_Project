@@ -13,12 +13,12 @@ export default class SubmissionJob{
         console.log("job handler called", job.name);
         console.log(this.payload);
         if(job) {
-            const keys = Object.keys(this.payload);
-            const key = keys[0];
-            const language = this.payload[key].language;
-            const code = this.payload[key].code;
-            const input = this.payload[key].input;
-            const output = this.payload[key].output;
+            const user = this.payload.userId;
+            const language = this.payload.language;
+            console.log(language);
+            const code = this.payload.code;
+            const input = this.payload.input;
+            const output = this.payload.output;
             const strategy = createExecutor(language);
             if(strategy != null) {
                 const response = await strategy.execute(code,input,output);
