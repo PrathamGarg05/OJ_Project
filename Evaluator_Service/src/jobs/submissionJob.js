@@ -1,7 +1,5 @@
-import { Job } from "bullmq";
-import runCpp from "../containers/runCppDocker.js";
 import createExecutor from "../utils/ExecutorFactory.js";
-
+import evaluationQueueProducer from "../producers/evaluationQueueProducer.js";
 export default class SubmissionJob{
     name;
     payload;
@@ -13,7 +11,8 @@ export default class SubmissionJob{
         console.log("job handler called", job.name);
         console.log(this.payload);
         if(job) {
-            const user = this.payload.userId;
+            const userId = this.payload.userId;
+            const submissionId = this.payload.submissionId;
             const language = this.payload.language;
             console.log(language);
             const code = this.payload.code;
@@ -22,7 +21,8 @@ export default class SubmissionJob{
             const strategy = createExecutor(language);
             if(strategy != null) {
                 const response = await strategy.execute(code,input,output);
-                if(response.status == "Completed") {
+                evaluationQueueProducer({response, userId: userId, submissionId: submissionId});
+                if(response.status == "SUCCESS") {
                     console.log("Code executed successfully");
                     console.log(response);
                 } else {

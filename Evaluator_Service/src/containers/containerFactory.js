@@ -1,6 +1,6 @@
 import Docker from 'dockerode';
 
-async function createContainer(image, cmd, memory = 256 * 1024 * 1024, cpu = 1e9) {
+async function createContainer(image, cmd, memory = 512 * 1024 * 1024, cpu = 1e9) {
     const docker = new Docker();
 
     const container = await docker.createContainer({
