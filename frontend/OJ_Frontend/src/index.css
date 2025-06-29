@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+html, body {
+      height: 100%;
+      margin: 0; /* Remove default body margin */
+      padding: 0; /* Remove default body padding */
+    }
+#root { /* Or #app, depending on your root element's ID */
+          height: 100%;
+        }
+ #root { /* Or #app, depending on your root element's ID */
+          height: 100vh;
+        }

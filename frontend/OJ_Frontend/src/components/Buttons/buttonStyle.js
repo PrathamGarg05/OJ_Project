@@ -1,6 +1,6 @@
 function getButtonStyle(styleType){
     if(styleType === "primary"){
-        return "bg-blue-500  hover:bg-blue-700 transition";
+        return "bg-blue-500";
     }else if(styleType === "secondary"){
         return "bg-gray-500";
     }else if(styleType === "error"){
