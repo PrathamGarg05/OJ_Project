@@ -12,9 +12,9 @@ function LeftPanel(){
         {name: "Solutions", icon: FaFlask}
     ]
     return (
-        <div className="h-full w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto m-1 rounded-md">
+        <div className="h-full w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-md">
             <TabGroup>
-                <TabList className="flex space-x-4 border-b border-gray-300 dark:border-gray-700 pb-2 gap-0.5 bg-gray-800 items-center">
+                <TabList className="flex space-x-4 border-b border-gray-300 dark:border-gray-700 dark:bg-gray-800 pb-2 gap-0.5 bg-gray-100 items-center">
                     {tabs.map((tab,idx) => {
                         const Icon = tab.icon;
                         return (
@@ -24,11 +24,11 @@ function LeftPanel(){
                                     clsx(
                                         'flex items-center gap-1 px-2 py-1 text-sm font-medium m-1 rounded-md mb-0',
                                         selected
-                                        ? 'border-b-2 border-blue-500 text-blue-600 dark:text-blue-400'
-                                        : 'text-gray-500 hover:text-blue-500',
+                                        ? 'border-b-2 dark:border-blue-500 text-black dark:text-white'
+                                        : 'text-gray-500',
                                         hover
-                                        ? 'bg-gray-800'
-                                        : 'text-gray-500 hover:text-blue-500',
+                                        ? 'dark:bg-gray-700 bg-gray-200'
+                                        : 'hover:text-blue-500',
                                     )
                                     }
                             >

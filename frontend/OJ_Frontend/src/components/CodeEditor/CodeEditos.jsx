@@ -1,13 +1,16 @@
 import { Editor } from "@monaco-editor/react";
-import { useState } from "react";
+import { useRef } from "react";
+import LanguageSelector from "./LanguageSelector";
 
-function CodeEditor({ theme = "vs-dark", language = "javascript", defaultCode = "" }) {
+function CodeEditor({ theme = "vs-dark", code, onCodeChange , language="cpp"}) {
 
-    const[code, setCode] = useState("//Your Code Here");
+    // const[code, setCode] = useState("//Your Code Here");
 
-    function handleEditorChange(value) {
-        setCode(value);
-        console.log(code);
+    const editorRef = useRef(null);
+
+    function handleEditorDidMount(editor) {
+        editorRef.current = editor;
+        editor.focus();
     }
 
     return (
@@ -17,8 +20,8 @@ function CodeEditor({ theme = "vs-dark", language = "javascript", defaultCode = 
             width="100%"
             theme={theme}
             language={language}
-            defaultValue={defaultCode}
-            onChange={handleEditorChange}
+            value={code}
+            onChange={(value) => onCodeChange(value)}
             options={{
                 fontSize: 14,
                 minimap: { enabled: false },
@@ -28,6 +31,7 @@ function CodeEditor({ theme = "vs-dark", language = "javascript", defaultCode = 
                 suggestOnTriggerCharacters: true,
                 quickSuggestions: true,
             }}
+            onMount={handleEditorDidMount}
         />
     </div>
   );
