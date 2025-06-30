@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CodeEditor from "../CodeEditor/CodeEditos";
 import LanguageSelector from "../CodeEditor/LanguageSelector";
 import { defaultCodeMap, languagesMap } from "../../utils/constants";
+import { ThemeContext } from "../../context/ThemeContext";
 
-function RightPanel({ theme }) {
+function RightPanel() {
 
     const languages = languagesMap;
 
@@ -11,15 +12,17 @@ function RightPanel({ theme }) {
 
     const [code, setCode] = useState(defaultCodeMap[language.value]);
 
+    const {theme} = useContext(ThemeContext);
+
     useEffect(() => {
         setCode(defaultCodeMap[language.value]);
     }, [language]);
 
     return(
         <div className="h-full w-full flex flex-col bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-md">
-            <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 px-4 py-1 border-b border-gray-300 dark:border-gray-700">
-                <span className="text-sm font-medium">Code Editor</span>
-                <LanguageSelector selected={language} onChange={setLanguage} />
+            <div className="py-1 flex items-center justify-between bg-gray-100 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700">
+                <span className="flex items-center text-sm font-medium px-2">Code Editor</span>
+                <span className="flex items-center text-sm font-medium px-2"><LanguageSelector selected={language} onChange={setLanguage} /></span>
             </div>
             <div className="flex-grow">
                 <CodeEditor
@@ -29,6 +32,7 @@ function RightPanel({ theme }) {
                 onCodeChange={setCode}
                 />
             </div>
+            
         </div>
     )
 }

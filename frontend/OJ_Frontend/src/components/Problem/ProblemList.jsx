@@ -10,8 +10,7 @@ function ProbelmList({problems}){
             problems.map(
                 problem => <Problem 
                     key={problem._id}
-                    title={problem.title}
-                    difficulty={problem.difficulty}
+                    problem={problem}
                 />
             )
         }

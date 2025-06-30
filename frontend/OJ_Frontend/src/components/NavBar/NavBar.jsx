@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { Button } from "@headlessui/react";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 
-function NavBar({ toggleTheme, theme }) {
+function NavBar() {
+
+    const {theme, toggleTheme} = useContext(ThemeContext)
 
     return(
         <nav className="h-14 flex items-center justify-between px-6 bg-white dark:bg-[#121212] border-b border-gray-200 dark:border-gray-700 text-sm font-medium shadow-sm">

@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import TextInput from "../TextInput/TextInput";
-import { login, register } from "../../services/auth";
+import { login, myProfile, register } from "../../services/auth";
 import Button from "../Buttons/Button";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 function AuthForm({type = 'login'}) {
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const {setUser} = useContext(AuthContext);
+
     const [cnfPassword, setCnfPassword] = useState('');
 
     const navigate = useNavigate();
@@ -29,8 +32,12 @@ function AuthForm({type = 'login'}) {
             else if(type == 'login'){
                 const res = await login({email, password});
                 console.log("Login successful" , res.data);
+                const profile = await myProfile();
+                if(profile) {
+                    setUser(profile.data.data.user);
+                }
             }
-            navigate('/problems');
+            {type == 'login' ? navigate('/problems') : navigate('/login')}
             
         } catch(error){
             console.log(`${type=='login' ? 'Login Failed' : 'Registration Failed'}`, error.message);

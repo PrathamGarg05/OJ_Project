@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
 
-function Problem({title, difficulty}){
+function Problem({problem}){
     
     return (
         <div>
-            {title} {'    '} {difficulty}
+            {console.log(problem._id)}
+            <Link to={`/problems/${problem._id}`}>{problem.title} {"      "} {problem.difficulty} </Link>
         </div>
     )
 

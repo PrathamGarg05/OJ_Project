@@ -5,7 +5,7 @@ import ProblemTab from '../Tabs/ProbDescription';
 import Submissions from '../Tabs/Submissions';
 import SolutionTab from '../Tabs/SolutionTab';
 
-function LeftPanel(){
+function LeftPanel({problem}){
     const tabs = [
         {name: "Description" ,icon: FaFileAlt },
         {name: "Submissions", icon: FaClock},
@@ -14,7 +14,7 @@ function LeftPanel(){
     return (
         <div className="h-full w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-md">
             <TabGroup>
-                <TabList className="flex space-x-4 border-b border-gray-300 dark:border-gray-700 dark:bg-gray-800 pb-2 gap-0.5 bg-gray-100 items-center">
+                <TabList className="flex space-x-4 border-b border-gray-300 dark:border-gray-700 dark:bg-gray-800 pb-1 gap-0.5 bg-gray-100 items-center">
                     {tabs.map((tab,idx) => {
                         const Icon = tab.icon;
                         return (
@@ -22,7 +22,7 @@ function LeftPanel(){
                                 key={idx}
                                 className={({ selected , hover}) =>
                                     clsx(
-                                        'flex items-center gap-1 px-2 py-1 text-sm font-medium m-1 rounded-md mb-0',
+                                        'flex items-center gap-1 px-2 py-1.75 text-sm font-medium m-1 rounded-md mb-0',
                                         selected
                                         ? 'border-b-2 dark:border-blue-500 text-black dark:text-white'
                                         : 'text-gray-500',
@@ -39,11 +39,14 @@ function LeftPanel(){
                         )
                     })}
                 </TabList>
-                <TabPanels className="pt-4">
-                    <TabPanel> <ProblemTab /> </TabPanel>
-                    <TabPanel> <Submissions /> </TabPanel>
-                    <TabPanel> <SolutionTab /> </TabPanel>
-                </TabPanels>
+                <div className="flex-1 overflow-y-auto px-4 pb-6">
+                    <TabPanels className="pt-4">
+                        <TabPanel> <ProblemTab problem={problem}/> </TabPanel>
+                        <TabPanel> <Submissions /> </TabPanel>
+                        <TabPanel> <SolutionTab /> </TabPanel>
+                    </TabPanels>
+                </div>
+                
             </TabGroup>            
         </div>
     )

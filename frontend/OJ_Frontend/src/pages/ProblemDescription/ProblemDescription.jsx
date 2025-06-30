@@ -3,39 +3,56 @@ import NavBar from "../../components/NavBar/NavBar";
 import LeftPanel from "../../components/Panels/LeftPanel";
 import RightPanel from "../../components/Panels/RightPanel";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import SubmitPanel from "../../components/Panels/SubmitPanel";
+import { getProblemDetails } from "../../services/problem";
+import { useParams } from "react-router-dom";
 
 function ProblemDescription() {
 
-    const [theme, setTheme] = useState("dark");
+    const {id} = useParams();
 
-    useEffect(() => {
-        const savedTheme = localStorage.getItem("theme") || "dark";
-        setTheme(savedTheme);
-        document.documentElement.classList.toggle("dark", savedTheme === "dark");
-    }, []);
+    const [problem, setProblem] = useState({});
 
-    const toggleTheme = () => {
-        const newTheme = theme === "dark" ? "light" : "dark";
-        setTheme(newTheme);
-        localStorage.setItem("theme", newTheme);
-        document.documentElement.classList.toggle("dark", newTheme === "dark");
+    const fetchProblem = async (id) => {
+        try {
+            const res = await getProblemDetails(id); 
+            const data = res.data.data;
+            setProblem(data);
+            console.log(data);
+        } catch (err) {
+            console.error('Failed to fetch problem', err);
+        }
     };
 
+
+    useEffect(() => {
+        fetchProblem(id);
+    }, []);
+
     return (
-        <div className="h-full w-full overflow-hidden bg-black">
+        <div className="flex flex-col h-dvh w-full bg-black">
             <NavBar
-                theme={theme}
-                toggleTheme={toggleTheme}
             />
-            <PanelGroup direction="horizontal" className="h-screen">
-                <Panel defaultSize={35} minSize={10} maxSize={90}>
-                    <LeftPanel />
-                </Panel>
-                <PanelResizeHandle className="hover:bg-neutral-700 w-1 cursor-col-resize" />
-                <Panel defaultSize={65}>
-                    <RightPanel theme={theme}/>
-                </Panel>
-            </PanelGroup>
+            <main className="flex-1 overflow-hidden">
+                <PanelGroup direction="horizontal" className="h-full">
+                    <Panel defaultSize={35} minSize={10} maxSize={90}>
+                        <LeftPanel problem={problem}/>
+                    </Panel>
+                    <PanelResizeHandle className="hover:bg-neutral-700 w-1 cursor-col-resize" />
+                    <Panel>
+                        <PanelGroup direction="vertical">
+                            <Panel defaultSize={70} minSize={6}>
+                                <RightPanel/>
+                            </Panel>
+                            <PanelResizeHandle className="h-1 hover:bg-neutral-700 cursor-row-resize" />
+                            <Panel defaultSize={30} minSize={15}>
+                                <SubmitPanel />
+                            </Panel>
+                        </PanelGroup>
+                    </Panel>
+                </PanelGroup>
+            </main>
+            
             
         </div>
     )
