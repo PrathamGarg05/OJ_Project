@@ -1,22 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import CodeEditor from "../CodeEditor/CodeEditos";
 import LanguageSelector from "../CodeEditor/LanguageSelector";
-import { defaultCodeMap, languagesMap } from "../../utils/constants";
 import { ThemeContext } from "../../context/ThemeContext";
+import { CodeContext } from "../../context/CodeContext";
 
 function RightPanel() {
 
-    const languages = languagesMap;
-
-    const [language, setLanguage] = useState(languages[0]);
-
-    const [code, setCode] = useState(defaultCodeMap[language.value]);
+    const {language, setLanguage, code, setCode} = useContext(CodeContext);
 
     const {theme} = useContext(ThemeContext);
-
-    useEffect(() => {
-        setCode(defaultCodeMap[language.value]);
-    }, [language]);
 
     return(
         <div className="h-full w-full flex flex-col bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-md">

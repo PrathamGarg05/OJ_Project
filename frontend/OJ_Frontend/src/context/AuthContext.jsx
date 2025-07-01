@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { myProfile } from "../services/auth";
+import { logout, myProfile } from "../services/auth";
 
 export const AuthContext = createContext();
 
@@ -29,6 +29,12 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
+  const userLogout = async() => {
+    await logout();
+    setUser(null);
+    
+  }
+
 //   const logout = async () => {
 //     await fetch("/api/logout", {
 //       method: "POST",
@@ -38,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 //   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading ,userLogout}}>
       {children}
     </AuthContext.Provider>
   );

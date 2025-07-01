@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import LeftPanel from "../../components/Panels/LeftPanel";
 import RightPanel from "../../components/Panels/RightPanel";
@@ -6,12 +6,14 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import SubmitPanel from "../../components/Panels/SubmitPanel";
 import { getProblemDetails } from "../../services/problem";
 import { useParams } from "react-router-dom";
+import { useContext } from "react";
+import { ProblemContext } from "../../context/ProblemContext";
 
 function ProblemDescription() {
 
     const {id} = useParams();
 
-    const [problem, setProblem] = useState({});
+    const {problem, setProblem} = useContext(ProblemContext);
 
     const fetchProblem = async (id) => {
         try {

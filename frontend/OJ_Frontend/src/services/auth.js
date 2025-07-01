@@ -6,3 +6,5 @@ export const register = (registerData) => api.post('/users/register', registerDa
 
 export const myProfile = () => api.get('/users/me');
 
+export const logout = () => api.post('/users/logout');
+

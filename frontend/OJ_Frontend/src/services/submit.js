@@ -1,3 +1,3 @@
 import api from "./api.js";
 
-export const sendSubmission = async(submitData) => api.post('/submissions');
+export const sendSubmission = (submitData) => api.post('/submissions', submitData);
