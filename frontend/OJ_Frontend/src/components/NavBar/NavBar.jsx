@@ -84,7 +84,7 @@ function NavBar() {
                     onClick={()=> {
                         navigate('/')
                     }}
-                    className={"p-2 rounded-md bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"}
+                    className={"p-2 rounded-md bg-gray-100 dark:text-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"}
                 >
                     Home
                 </Button>

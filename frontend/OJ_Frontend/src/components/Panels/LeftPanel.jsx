@@ -17,10 +17,12 @@ function LeftPanel({problem}){
                 <TabList className="flex space-x-4 border-b border-gray-300 dark:border-gray-700 dark:bg-gray-800 pb-1 gap-0.5 bg-gray-100 items-center">
                     {tabs.map((tab,idx) => {
                         const Icon = tab.icon;
+                        const name = tab.name;
                         return (
                             <Tab
                                 key={idx}
-                                className={({ selected , hover}) =>
+                                disabled={name == "Solutions"}
+                                className={({ selected , hover, disabled}) =>
                                     clsx(
                                         'flex items-center gap-1 px-2 py-1.75 text-sm font-medium m-1 rounded-md mb-0',
                                         selected
@@ -29,6 +31,9 @@ function LeftPanel({problem}){
                                         hover
                                         ? 'dark:bg-gray-700 bg-gray-200'
                                         : 'hover:text-blue-500',
+                                        disabled
+                                        ? 'cursor-not-allowed'
+                                        : 'text-gray-500'
                                     )
                                     }
                             >
