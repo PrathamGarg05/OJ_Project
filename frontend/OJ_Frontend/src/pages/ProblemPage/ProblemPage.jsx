@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ProbelmList from "../../components/Problem/ProblemList";
 import { getProblems } from "../../services/problem.js";
+import NavBar from "../../components/NavBar/NavBar.jsx";
 
 function ProbelmsPage(){
 
@@ -21,7 +22,11 @@ function ProbelmsPage(){
     },[]);
 
     return (
+      <div className="bg-gradient-to-b from-black via-gray-900 to-black text-white min-h-screen flex flex-col">
+        <NavBar />
         <ProbelmList problems={problems}/>
+      </div>
+        
     )
 }
 

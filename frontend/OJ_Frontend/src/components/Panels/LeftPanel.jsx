@@ -39,8 +39,8 @@ function LeftPanel({problem}){
                         )
                     })}
                 </TabList>
-                <div className="flex-1 overflow-y-auto px-4 pb-6">
-                    <TabPanels className="pt-4">
+                <div className="flex-1 overflow-y-auto pr-2 pb-6">
+                    <TabPanels className="pt-2">
                         <TabPanel> <ProblemTab problem={problem}/> </TabPanel>
                         <TabPanel> <Submissions /> </TabPanel>
                         <TabPanel> <SolutionTab /> </TabPanel>
