@@ -13,7 +13,7 @@ const ProblemSchema = new mongoose.Schema({
      difficulty: {
         type: String,
         required: [true, 'Difficulty cannot be empty'],
-        enum : [`easy`, `medium`, `difficulty`],
+        enum : [`Easy`, `Medium`, `Hard`],
         default: 'easy'
      },
      constraints: {
@@ -21,11 +21,10 @@ const ProblemSchema = new mongoose.Schema({
      },
      sampleInput: {
         type: String,
-        required: true
+        
      },
      sampleOutput: {
         type: String,
-        required: true
      }
 });
 

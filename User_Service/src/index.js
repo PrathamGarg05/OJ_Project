@@ -3,6 +3,7 @@ import connectDB from './config/dbConfig.js';
 import apiRouter from './routes/apiRouter.js';
 import { API_GATEWAY, PORT } from './config/serverConfig.js';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -10,6 +11,8 @@ app.use(cors({
     origin: true,
     credentials:true
 }));
+
+app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.raw());

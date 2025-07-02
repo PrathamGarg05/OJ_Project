@@ -13,7 +13,7 @@ export const authenticateToken = (JWT_SECRET) => (req,res,next) => {
         });
     }
     try{
-        console.log(token);
+
         const decoded = jwt.verify(token, JWT_SECRET);   
         req.user = decoded;   
         next();

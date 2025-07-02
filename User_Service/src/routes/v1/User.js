@@ -18,4 +18,12 @@ userRouter.get('/ping', (req,res) => {
 
 userRouter.get('/', authenticateToken(JWT_SECRET), roleAuthorization("admin"), getAllUsers);
 
+userRouter.post('/logout', authenticateToken(JWT_SECRET), (req,res) => {
+    res.clearCookie('token', {
+        httpOnly: true,
+        sameSite: 'lax'
+    });
+    res.status(200).json({message: "Logged out successfully"});
+});
+
 export default userRouter;

@@ -45,7 +45,7 @@ export const myProfile = async(req,res) => {
     try{
         const user = await UserService.myProfile(req.user.email);
         return successResponse(
-            {user : {id: user._id, username: user.username, email: user.email}},
+            {user : {id: user._id, username: user.username, email: user.email, joined: user.createdAt}},
             StatusCodes.OK,
             "Successfully fetched user details",
             res);

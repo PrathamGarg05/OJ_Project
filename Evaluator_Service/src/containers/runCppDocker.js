@@ -12,12 +12,15 @@ class CppExecutor {
 
         await pullImage(CPP_IMAGE);
 
-        let script = `echo '${code.replace(/'/g, `\\"`)}' > main.cpp && g++ main.cpp -o main
-        `;
-
-        testcases.forEach((tc, i) => {
-            script += `echo '${tc.input}' | ./main; echo '---'\n`;
-        });
+        let script = `
+echo "${code.replace(/"/g, '\\"')}" > main.cpp
+g++ main.cpp -o main
+if [ $? -ne 0 ]; then
+  echo "__COMPILE_ERROR__"
+else
+  ${testcases.map(tc => `echo '${tc.input}' | ./main; echo "---"`).join('\n')}
+fi
+`;
 
         const cppDocker = await createContainer(CPP_IMAGE, 
             ['sh', 
@@ -46,27 +49,42 @@ class CppExecutor {
                 loggerStream.on('end', () => {
                     const completeBuffer = Buffer.concat(rawLogBuffer);
                     const decodeStream = decodeDockerStream(completeBuffer);
-                    console.log(decodeStream);
-                    if(decodeStream.stderr){
-                        rej(decodeStream.stderr);
+
+                    const stdout = decodeStream.stdout.toString();
+                    const stderr = decodeStream.stderr.toString();
+                    if (stdout.includes("__COMPILE_ERROR__")) {
+                        rej({
+                            verdict: "CE",
+                            error: stderr, 
+                            status: "Failed"
+                        });
                     }
-                    res(decodeStream.stdout);
+                    if(stderr) {
+                        rej ({
+                            verdict: "RE",
+                            error:stderr,
+                            status: "Failed"
+                        });
+                    }
+                    res(stdout);
                 });
             });
             console.log("Full Raw Output:\n", codeResponse);
 
-        const {results, verdict} = outputMatcher(codeResponse, testcases);
+        const {results, verdict, totalC, wrongC} = outputMatcher(codeResponse, testcases);
 
         console.log("Results:", results);
 
         return {
             status: 'Completed',
             verdict: verdict,
-            results
+            results,
+            passed: totalC- wrongC,
+            total: totalC,
         };
 
         } catch(err){
-            return {output: err, status: "Failed"};
+            return err;
         } finally{
             await cppDocker.remove();
         }

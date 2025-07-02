@@ -10,7 +10,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 const redisCache = new Redis();
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer, { 
+    cors: {
+        origin:true,
+        methods: ["GET", "POST"],
+        credentials: true
+    }
+ });
 
 io.on("connection", (socket) => {
   socket.on("setUserId", async (userId) => {

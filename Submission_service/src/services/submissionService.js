@@ -14,3 +14,8 @@ export const addSubmission = async(submissionData) => {
     const response = await submissionQueueProducer(submission);
     return {submission, queueResponse : response};
 }
+
+export const getSubmissions = async(userId, problemId) => {
+    const submissions = await SubmissionRepo.getSubmissions(userId, problemId);
+    return submissions;
+}

@@ -20,7 +20,14 @@ export default class SubmissionJob{
             const strategy = createExecutor(language);
             if(strategy != null) {
                 const response = await strategy.execute(code,testcases.data);
-                evaluationQueueProducer({verdict: response.verdict, userId: userId, submissionId: submissionId});
+                evaluationQueueProducer({
+                    verdict: response.verdict, 
+                    userId: userId, 
+                    submissionId: submissionId, 
+                    passed: response.passed, 
+                    total: response.total,
+                    error : response?.error
+                });
                 if(response.status == "Completed") {
                     console.log("Code executed successfully");
                     console.log(response);

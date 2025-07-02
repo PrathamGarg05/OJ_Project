@@ -4,8 +4,12 @@ import fastifyApp from './app.js';
 import { connectDB } from './config/dbConfig.js';
 import {fastifyFormbody} from '@fastify/formbody'
 import EvaluationWorker from './workers/evaluationWorker.js';
+import cors from '@fastify/cors'
+import cookieParser from 'cookie-parser';
 
 const fastify = Fastify({ logger: true });
+
+fastify.register(cookieParser);
 
 fastify.register(fastifyFormbody);
 

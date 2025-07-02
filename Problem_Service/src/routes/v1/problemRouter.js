@@ -8,9 +8,9 @@ const problemRouter = express.Router();
 
 problemRouter.post('/',authenticateToken(JWT_SECRET), roleAuthorization("admin"), ProblemController.createProblem);
 
-problemRouter.get('/',authenticateToken(JWT_SECRET), roleAuthorization("admin", "user"),  ProblemController.getProblems);
+problemRouter.get('/',  ProblemController.getProblems);
 
-problemRouter.get('/:id',authenticateToken(JWT_SECRET), roleAuthorization("admin","user"),  ProblemController.getProblem);
+problemRouter.get('/:id',  ProblemController.getProblem);
 
 problemRouter.put('/:id',authenticateToken(JWT_SECRET), roleAuthorization("admin"),  ProblemController.updateProblem);
 
