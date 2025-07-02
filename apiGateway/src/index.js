@@ -40,6 +40,13 @@ app.use(
   })
 );
 
+app.use(
+  '/api/v1/run',
+  proxy(SUBMISSION_SERVICE_URL, {
+    proxyReqPathResolver: (req) => `/api/v1/run${req.url}`,
+  })
+);
+
 app.listen(PORT, () => {
     console.log(`server running at port ${PORT}`);
 });

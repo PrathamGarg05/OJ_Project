@@ -1,6 +1,7 @@
 import createExecutor from "../utils/ExecutorFactory.js";
 import evaluationQueueProducer from "../producers/evaluationQueueProducer.js";
-import { getTestcases } from "../utils/fetchTestcases.js";
+import { getSampleTestcases, getTestcases } from "../utils/fetchTestcases.js";
+import axios from 'axios';
 export default class SubmissionJob{
     name;
     payload;
@@ -16,26 +17,55 @@ export default class SubmissionJob{
             const submissionId = this.payload._id;
             const language = this.payload.language;
             const code = this.payload.code;
-            const testcases = await getTestcases(this.payload.problemId);
-            const strategy = createExecutor(language);
-            if(strategy != null) {
-                const response = await strategy.execute(code,testcases.data);
-                evaluationQueueProducer({
-                    verdict: response.verdict, 
-                    userId: userId, 
-                    submissionId: submissionId, 
-                    passed: response.passed, 
-                    total: response.total,
-                    error : response?.error
-                });
-                if(response.status == "Completed") {
-                    console.log("Code executed successfully");
-                    console.log(response);
-                } else {
-                    console.log("Code execution failed");
-                    console.log(response);
+
+            if(this.payload.type) {
+                const testcases = await getSampleTestcases(this.payload.problemId);
+                const strategy = createExecutor(language);
+                if(strategy != null) {
+                    const response = await strategy.execute(code, testcases.data);
+                    if(response.status == "Completed") {
+                        console.log("Code executed successfully");
+                        console.log(response);
+                    } else {
+                        console.log("Code execution failed");
+                        console.log(response);
+                    }
+                    await axios.post('http://localhost:3005/sendPayload', {
+                        userId: userId,
+                        payload: {
+                            verdict: response.verdict,
+                            userId: userId,
+                            passed: response.passed, 
+                            total: response.total,
+                            error : response?.error
+                        }
+                    });
+                }
+                
+            }
+            else{
+                const testcases = await getTestcases(this.payload.problemId);
+                const strategy = createExecutor(language);
+                if(strategy != null) {
+                    const response = await strategy.execute(code,testcases.data);
+                    evaluationQueueProducer({
+                        verdict: response.verdict, 
+                        userId: userId, 
+                        submissionId: submissionId, 
+                        passed: response.passed, 
+                        total: response.total,
+                        error : response?.error
+                    });
+                    if(response.status == "Completed") {
+                        console.log("Code executed successfully");
+                        console.log(response);
+                    } else {
+                        console.log("Code execution failed");
+                        console.log(response);
+                    }
                 }
             }
+            
         }
     };
     failed = (job) => {

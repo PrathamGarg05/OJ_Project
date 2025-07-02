@@ -19,3 +19,8 @@ export const getSubmissions = async(req, res) => {
     );
     return successResponse(response, StatusCodes.OK, "Fetched Submissions", res);
 }
+
+export const runProblem = async(req,res) => {
+    const response = await submissionService.runProblem(req.body);
+    return successResponse(response, StatusCodes.CREATED, "Running Code", res);
+}

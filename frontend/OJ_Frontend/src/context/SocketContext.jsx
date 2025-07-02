@@ -6,8 +6,8 @@ import { useState } from "react";
 export const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
-    const {user} = useContext(AuthContext);
-    const [result, setResult] = useState(null);
+    const {user, setLoading} = useContext(AuthContext);
+    const [result, setResult] = useState([]);
     const socketRef = useRef(null);
     useEffect(() => {
         if (!user?.id) return;
@@ -26,6 +26,7 @@ export const SocketProvider = ({ children }) => {
         socketRef.current.on("submissionPayloadResponse", (data) => {
             console.log("Submission result received:", data);
             setResult(data);
+            setLoading(false);
         });
 
         return () => {
@@ -34,7 +35,7 @@ export const SocketProvider = ({ children }) => {
     }, [user]);
 
     return (
-        <SocketContext.Provider value={{socketRef, result}}>
+        <SocketContext.Provider value={{socketRef, result, setResult}}>
             {children}
         </SocketContext.Provider>
     );

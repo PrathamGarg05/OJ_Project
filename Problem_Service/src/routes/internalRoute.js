@@ -16,4 +16,6 @@ const verifyInternalApiKey = (req, res, next) => {
 // Internal-only route
 internalRouter.get('/internal/problems/:id/testcases', verifyInternalApiKey, TestcaseController.getAllTestcase);
 
+internalRouter.get('/internal/problems/:id/sampleTestcases', verifyInternalApiKey, TestcaseController.getSampleTestcase);
+
 export default internalRouter;
