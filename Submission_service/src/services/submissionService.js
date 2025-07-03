@@ -24,3 +24,8 @@ export const runProblem = async(runData) => {
     const response = await submissionQueueProducer(runData);
     return {queueResponse: response};
 }
+
+export const getUserStats = async(userId) => {
+    const response = await SubmissionRepo.getUserStats(userId);
+    return response;
+}

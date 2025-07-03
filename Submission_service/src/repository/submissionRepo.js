@@ -30,3 +30,18 @@ export const getSubmissions = async(userId, problemId) => {
         return err;
     }
 }
+
+export const getUserStats = async(userId) => {
+    try{
+        const problemsSolved = await Submission.distinct("problemId", {userId: userId, status : "AC"});
+        const totalSubmissions = await Submission.countDocuments({userId: userId});
+        const lastSubmission = await Submission.findOne({userId: userId}).sort({createdAt: -1}).lean();
+        return {
+            problemsSolved: problemsSolved.length,
+            totalSubmissions,
+            lastSubmission,
+        };
+    } catch(error) {
+        return error;
+    }
+}
