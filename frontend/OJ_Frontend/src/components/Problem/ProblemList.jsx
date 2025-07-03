@@ -1,8 +1,24 @@
+import { useContext, useEffect, useState } from "react";
 import Problem from "./Problem";
+import { AuthContext } from "../../context/AuthContext";
+import { getUserStats } from "../../services/submit";
 
 function ProbelmList({problems}){
 
-    
+    const {user} = useContext(AuthContext);
+
+    const [solvedProblems, setSolvedProblem] = useState([]);
+
+    const getSolvedProblems = async(userId) => {
+        const response = await getUserStats(userId);
+        setSolvedProblem(response.data.data.problemsSolved);
+    }
+
+    const isSolved = (problemId) => {return solvedProblems.includes(problemId)};
+
+    useEffect(() => {
+        getSolvedProblems(user.id);
+    }, [user])
 
     return(
        <div className="bg-gradient-to-b from-black via-gray-900 to-black text-white min-h-screen py-16 px-6">
@@ -21,6 +37,7 @@ function ProbelmList({problems}){
                         <th className="px-6 py-4">#</th>
                         <th className="px-6 py-4">Title</th>
                         <th className="px-6 py-4">Difficulty</th>
+                        <th className="px-6 py-4">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,6 +48,7 @@ function ProbelmList({problems}){
                                         key={problem._id}
                                         problem={problem}
                                         index={index}
+                                        solved={isSolved(problem._id)}
                                     />
                                 )
                             )

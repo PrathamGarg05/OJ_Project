@@ -16,7 +16,6 @@ export default function ProfilePage() {
 
   async function stats(userId) {
     const response = await getUserStats(userId);
-    console.log(response.data.data);
     setUserStats(response.data.data);
   }
 
@@ -59,7 +58,7 @@ export default function ProfilePage() {
                           Problems Solved
                       </p>
                       <p className="text-2xl font-bold text-green-400">
-                          {userStats.problemsSolved ? userStats.problemsSolved : "--"}
+                          {userStats.problemsSolved ? userStats.problemsSolved.length : "--"}
                       </p>
                   </div>
                   <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
@@ -75,7 +74,7 @@ export default function ProfilePage() {
                           Accuracy
                       </p>
                       <p className="text-2xl font-bold text-yellow-400">
-                          {(userStats.problemsSolved && userStats.totalSubmissions) ? `${userStats.problemsSolved / userStats.totalSubmissions * 100}%` : "-- %"}
+                          {(userStats.problemsSolved && userStats.totalSubmissions) ? `${userStats.problemsSolved.length / userStats.totalSubmissions * 100}%` : "-- %"}
                       </p>
                   </div>
                   <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">

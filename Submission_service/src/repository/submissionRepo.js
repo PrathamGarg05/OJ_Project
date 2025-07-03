@@ -37,7 +37,7 @@ export const getUserStats = async(userId) => {
         const totalSubmissions = await Submission.countDocuments({userId: userId});
         const lastSubmission = await Submission.findOne({userId: userId}).sort({createdAt: -1}).lean();
         return {
-            problemsSolved: problemsSolved.length,
+            problemsSolved,
             totalSubmissions,
             lastSubmission,
         };

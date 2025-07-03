@@ -20,12 +20,10 @@ function ProblemDescription() {
             const res = await getProblemDetails(id); 
             const data = res.data.data;
             setProblem(data);
-            console.log(data);
         } catch (err) {
             console.error('Failed to fetch problem', err);
         }
     };
-
 
     useEffect(() => {
         fetchProblem(id);

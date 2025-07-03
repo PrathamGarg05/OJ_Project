@@ -28,6 +28,5 @@ export const runProblem = async(req,res) => {
 export const getUserStats = async(req,res) => {
     const {userId} = req.params;
     const response = await submissionService.getUserStats(userId);
-    console.log(response);
     return successResponse(response, StatusCodes.OK, "Fetched Stats", res);
 }

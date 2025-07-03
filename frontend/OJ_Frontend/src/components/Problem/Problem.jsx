@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Problem({problem, index}){
+function Problem({problem, index, solved}){
 
     const getDifficultyColor = (difficulty) => {
         switch (difficulty) {
@@ -28,6 +28,12 @@ function Problem({problem, index}){
             </td>
             <td className={`px-6 py-4 ${getDifficultyColor(problem.difficulty)}`}>
                 {problem.difficulty}
+            </td>
+            <td>
+                {solved ? 
+                    <span className="ml-2 text-green-500 font-medium">✔ Solved</span>
+                    : <span className="ml-2 text-gray-700 font-medium">--</span>
+                }
             </td>
         </tr>
     )
