@@ -3,6 +3,7 @@ import * as ProblemController from '../../controllers/problemController.js';
 import * as testcaseController from '../../controllers/testcaseController.js';
 import { authenticateToken, roleAuthorization } from '../../../../shared/middlewares/authMiddleware.js';
 import { JWT_SECRET } from '../../config/serverConfig.js';
+import { getHint } from '../../controllers/aiController.js';
 
 const problemRouter = express.Router();
 
@@ -22,5 +23,6 @@ problemRouter.get('/:id/testcases',authenticateToken(JWT_SECRET), roleAuthorizat
 
 problemRouter.get('/:id/testcases/sample',authenticateToken(JWT_SECRET), roleAuthorization("admin","user"), testcaseController.getSampleTestcase);
 
+problemRouter.get('/:id/hint',authenticateToken(JWT_SECRET), roleAuthorization("admin","user"), getHint);
 
 export default problemRouter;

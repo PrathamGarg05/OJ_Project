@@ -57,3 +57,33 @@ export const getAllUsers = async() => {
     const users = await UserRepo.getAllUsers();
     return users;
 };
+
+export const useHint = async(id) => {
+    try{
+        const user = await UserRepo.findUserById(id);
+        const today = new Date().toISOString().split('T')[0];
+        if(!user){
+            throw{
+                message: "User not found",
+                status: StatusCodes.NOT_FOUND
+            };
+        }
+        if(user.hintUsage.lastUsed != today) {
+            user.hintUsage = { count: 1, lastUsed: today };
+        } else if (user.hintUsage.count < 3) {
+            user.hintUsage.count += 1;
+        } else {
+            throw{
+                message: "Daily hint limit reached",
+                status: StatusCodes.TOO_MANY_REQUESTS
+            };
+        }
+        await user.save();
+        return {
+            message: "Hint used successfully",
+            status: StatusCodes.OK
+        };
+    }catch(error){
+        throw error;
+    }
+};

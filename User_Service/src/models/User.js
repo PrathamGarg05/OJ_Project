@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
         required: true,
         default: "user",
         enum: ["user", "admin"]
+    },
+    hintUsage: {
+        count: { type: Number, default: 0 },
+        lastUsed: { type: String }
     }
 }, {timestamps: true});
 

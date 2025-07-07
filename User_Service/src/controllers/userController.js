@@ -45,7 +45,7 @@ export const myProfile = async(req,res) => {
     try{
         const user = await UserService.myProfile(req.user.email);
         return successResponse(
-            {user : {id: user._id, username: user.username, email: user.email, joined: user.createdAt}},
+            {user : {id: user._id, username: user.username, email: user.email, joined: user.createdAt, hintUsage: user.hintUsage}},
             StatusCodes.OK,
             "Successfully fetched user details",
             res);
@@ -58,6 +58,15 @@ export const getAllUsers = async(req,res) => {
     try{
         const users = await UserService.getAllUsers();
         return successResponse(users, StatusCodes.OK, "Fetched all users", res);
+    }catch(error){
+        return errorResponse(error, res);
+    }
+};
+
+export const useHint = async(req,res) => {
+    try{
+        const response = await UserService.useHint(req.params.id);
+        return successResponse(response, StatusCodes.OK, "Hint used successfully", res);
     }catch(error){
         return errorResponse(error, res);
     }

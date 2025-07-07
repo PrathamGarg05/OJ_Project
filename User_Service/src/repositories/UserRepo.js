@@ -39,3 +39,13 @@ export const getAllUsers = async() => {
         throw error;
     }
 };
+
+export const findUserById = async(id) => {
+    try{
+        const user = await User.findById(id);
+        return user;
+    }
+    catch(error){
+        throw error;
+    }
+};

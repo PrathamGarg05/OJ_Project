@@ -16,6 +16,10 @@ function ProblemDescription() {
     const {problem, setProblem} = useContext(ProblemContext);
 
     const fetchProblem = async (id) => {
+        if(id === "undefined") {
+            console.log("No id found");
+            throw new Error("No id found");
+        };
         try {
             const res = await getProblemDetails(id); 
             const data = res.data.data;
