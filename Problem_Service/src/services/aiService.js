@@ -51,13 +51,14 @@ export const getBoilerplate = async(problemId, language) => {
         const response = await ai.models.generateContent({
             model: "gemini-2.0-flash",
             contents: `
-            You are a helpful assistant that can generate boilerplate code for a given problem.
+            You are a helpful assistant that can generate boilerplate(header files and main function) for a given problem.
             The problem statement is: ${problem.description}
             The language is: ${language}
-            Generate only boilerplate, not the complete solution.
-            like just include the header files and the main function, with the input format as given in the problem statement.
-            generate only the code, no other text like dont include the language name at start or end.
-            just start with header files.
+            Give only header files, and main function with input format as given in the problem statement.
+            Dont give the solution, just the boilerplate.
+            like in cpp, give only the header files and main function, dont give the complete solution.
+            similarily in java, give only the header files and main function, dont give the complete solution.
+            similarily in python, give only the header files and main function, dont give the complete solution.
             `,
           });
           return response.text;

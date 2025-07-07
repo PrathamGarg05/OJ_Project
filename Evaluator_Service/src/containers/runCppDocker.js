@@ -5,6 +5,7 @@ import decodeDockerStream from "./dockerHelper.js";
 import { CPP_IMAGE} from "../utils/constants.js";
 import pullImage from "./pullImage.js";
 import { outputMatcher } from "../utils/outputMatcher.js";
+import { codeResponseHelper } from "./codeResponseHelper.js";
 
 class CppExecutor {
     execute = async(code,testcases) => {
@@ -45,43 +46,20 @@ fi
         }); 
 
         try{
-            const codeResponse = await new Promise((res, rej) => {
-                loggerStream.on('end', () => {
-                    const completeBuffer = Buffer.concat(rawLogBuffer);
-                    const decodeStream = decodeDockerStream(completeBuffer);
-
-                    const stdout = decodeStream.stdout.toString();
-                    const stderr = decodeStream.stderr.toString();
-                    if (stdout.includes("__COMPILE_ERROR__")) {
-                        rej({
-                            verdict: "CE",
-                            error: stderr, 
-                            status: "Failed"
-                        });
-                    }
-                    if(stderr) {
-                        rej ({
-                            verdict: "RE",
-                            error:stderr,
-                            status: "Failed"
-                        });
-                    }
-                    res(stdout);
-                });
-            });
+            const codeResponse = await codeResponseHelper(loggerStream, rawLogBuffer, decodeDockerStream);
             console.log("Full Raw Output:\n", codeResponse);
 
-        const {results, verdict, totalC, wrongC} = outputMatcher(codeResponse, testcases);
+            const {results, verdict, totalC, wrongC} = outputMatcher(codeResponse, testcases);
 
-        console.log("Results:", results);
+            console.log("Results:", results);
 
-        return {
-            status: 'Completed',
-            verdict: verdict,
-            results,
-            passed: totalC- wrongC,
-            total: totalC,
-        };
+            return {
+                status: 'Completed',
+                verdict: verdict,
+                results,
+                passed: totalC- wrongC,
+                total: totalC,
+            };
 
         } catch(err){
             return err;

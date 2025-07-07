@@ -5,6 +5,7 @@ import { PYTHON_IMAGE } from "../utils/constants.js";
 import decodeDockerStream from "./dockerHelper.js";
 import pullImage from "./pullImage.js";
 import { outputMatcher } from "../utils/outputMatcher.js";
+import { codeResponseHelper } from "./codeResponseHelper.js";
 
 class PythonExecutor {
     execute = async(code, testcases) => {
@@ -12,11 +13,15 @@ class PythonExecutor {
 
         await pullImage(PYTHON_IMAGE);
 
-        let script = `echo '${code.replace(/'/g, `\\"`)}' > test.py && `;
+        let script = `
+echo "${code.replace(/"/g, '\\"')}" > main.py
+if ! python3 -m py_compile main.py 2>/dev/null; then
+  echo "__COMPILE_ERROR__"
+else
+${testcases.map(tc => `  echo '${tc.input}' | python3 main.py ; echo "---"`).join('\n')}
+fi
+`;
 
-        testcases.forEach((tc) => {
-            script += `echo '${tc.input}' | python3 test.py; echo '---'\n`;
-        });
 
         const pythonDocker = await createContainer(PYTHON_IMAGE, [
             'sh',
@@ -41,32 +46,25 @@ class PythonExecutor {
         }); 
 
         try{
-            const codeResponse = await new Promise((res, rej) => {
-                loggerStream.on('end', () => {
-                    console.log(rawLogBuffer);
-                    const completeBuffer = Buffer.concat(rawLogBuffer);
-                    const decodeStream = decodeDockerStream(completeBuffer);
-                    console.log(decodeStream);
-                    console.log(decodeStream.stdout);
-                    if(decodeStream.stderr){
-                        rej(decodeStream.stderr);
-                    }
-                    res(decodeStream.stdout);
-                });
-            });
-            const {results, verdict} = outputMatcher(codeResponse, testcases);
-            
+            const codeResponse = await codeResponseHelper(loggerStream, rawLogBuffer, decodeDockerStream);
+            console.log("Full Raw Output:\n", codeResponse);
+
+            const {results, verdict, totalC, wrongC} = outputMatcher(codeResponse, testcases);
+
             console.log("Results:", results);
-    
+
             return {
                 status: 'Completed',
                 verdict: verdict,
-                results
+                results,
+                passed: totalC- wrongC,
+                total: totalC,
             };
+
         } catch(err){
-            return {ouput: err, status: "Failed"};
+            return err;
         } finally{
-                await pythonDocker.remove();
+            await pythonDocker.remove();
         }
     };
 }

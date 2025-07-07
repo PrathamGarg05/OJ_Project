@@ -5,6 +5,7 @@ import decodeDockerStream from "./dockerHelper.js";
 import { JAVA_IMAGE } from "../utils/constants.js";
 import pullImage from "./pullImage.js";
 import { outputMatcher } from "../utils/outputMatcher.js";
+import { codeResponseHelper } from "./codeResponseHelper.js";
 
 class JavaExecutor {
     execute = async(code, testcases) => {
@@ -12,12 +13,15 @@ class JavaExecutor {
 
         await pullImage(JAVA_IMAGE);
 
-        let script = `echo '${code.replace(/'/g, `\\"`)}' > Main.java && javac Main.java && `;
-
-        testcases.forEach((tc) => {
-            script += `echo '${tc.input}' | java Main; echo '---'\n`;
-        });
-
+        let script = `
+echo "${code.replace(/"/g, '\\"')}" > Main.java
+javac Main.java
+if [ $? -ne 0 ]; then
+  echo "__COMPILE_ERROR__"
+else
+${testcases.map(tc => `  echo '${tc.input}' | java Main; echo "---"`).join('\n')}
+fi
+`;
         const javaDocker = await createContainer(JAVA_IMAGE, 
             ['sh', 
             '-c', 
@@ -41,30 +45,22 @@ class JavaExecutor {
         }); 
 
         try{
-            const codeResponse = await new Promise((res, rej) => {
-                loggerStream.on('end', () => {
-                    console.log(rawLogBuffer);
-                    const completeBuffer = Buffer.concat(rawLogBuffer);
-                    const decodeStream = decodeDockerStream(completeBuffer);
-                    console.log(decodeStream);
-                    console.log(decodeStream.stdout);
-                    if(decodeStream.stderr){
-                        rej(decodeStream.stderr);
-                    }
-                    res(decodeStream.stdout);
-                });
-            });
-            const {results, verdict} = outputMatcher(codeResponse, testcases);
-            
+            const codeResponse = await codeResponseHelper(loggerStream, rawLogBuffer, decodeDockerStream);
+            console.log("Full Raw Output:\n", codeResponse);
+
+            const {results, verdict, totalC, wrongC} = outputMatcher(codeResponse, testcases);
+
             console.log("Results:", results);
-    
+
             return {
                 status: 'Completed',
                 verdict: verdict,
-                results
+                results,
+                passed: totalC- wrongC,
+                total: totalC,
             };
         } catch(err){
-            return {ouput: err, status: "Failed"};
+            return err;
         } finally{
             await javaDocker.remove();
         }
