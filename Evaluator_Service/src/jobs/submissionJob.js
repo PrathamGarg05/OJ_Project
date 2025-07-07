@@ -35,6 +35,7 @@ export default class SubmissionJob{
                         payload: {
                             verdict: response.verdict,
                             userId: userId,
+                            results: response.results,
                             passed: response.passed, 
                             total: response.total,
                             error : response?.error

@@ -32,7 +32,7 @@ function Problem({problem, index, solved}){
             <td>
                 {solved ? 
                     <span className="ml-2 text-green-500 font-medium">✔ Solved</span>
-                    : <span className="ml-2 text-gray-700 font-medium">--</span>
+                    : <span className="ml-2 text-gray-600 font-medium">--</span>
                 }
             </td>
         </tr>

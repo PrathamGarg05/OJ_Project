@@ -13,7 +13,7 @@ const TestcaseSchema = new mongoose.Schema({
     },
     output: {
         type: String,
-        required: true
+        
     },
     isSample: {
         type: Boolean,

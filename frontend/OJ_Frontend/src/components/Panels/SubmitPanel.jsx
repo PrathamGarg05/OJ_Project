@@ -1,12 +1,10 @@
-import { Button } from "@headlessui/react";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { ProblemContext } from "../../context/ProblemContext";
-import { CodeContext } from "../../context/CodeContext";
-import { runProblem, sendSubmission } from "../../services/submit";
 import { SocketContext } from "../../context/SocketContext";
 import { getSampleTestCase } from "../../services/problem";
+import { SubmitContext } from '../../context/SubmitContext';
 
 function SubmitPanel() {
 
@@ -23,10 +21,10 @@ function SubmitPanel() {
         else if(verdict == "RE") return "Runtime Error";
     }
 
-    const {user, loading, setLoading} = useContext(AuthContext);
+    const {user, loading} = useContext(AuthContext);
     const {problem} = useContext(ProblemContext);
-    const {code, language} = useContext(CodeContext);
-    const {result, setResult} = useContext(SocketContext);
+    const {result} = useContext(SocketContext);
+    const {mode} = useContext(SubmitContext);
 
     const[sampleTestCase, setSampleTestCase] = useState([]);
 
@@ -35,24 +33,6 @@ function SubmitPanel() {
         setSampleTestCase(response.data.data);
         console.log(response.data.data);
     }
-    
-    async function onSubmitClick() { 
-        setLoading(true);
-        setResult([]); 
-        const userId = user.id;
-        const problemId = problem._id;
-        const langValue = language.value;
-        await sendSubmission({userId: userId, problemId: problemId, code: code, language: langValue});
-    }
-
-    async function onRun() {
-        setLoading(true);
-        setResult([]);
-        const userId = user.id;
-        const problemId = problem._id;
-        const langValue = language.value;
-        await runProblem({userId: userId, problemId: problemId, code: code, language: langValue, type:"run"})
-    }
 
     useEffect(() => {
         fetchSampleTestCase(problem._id);
@@ -60,80 +40,107 @@ function SubmitPanel() {
 
     return(
         <div className="h-full w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-md">
-            <TabGroup>
-                <TabList className="flex space-x-4 border-b border-gray-300 dark:border-gray-700 dark:bg-black pb-1 gap-0.5 bg-gray-100 items-center">
-                    <Button 
-                        className="px-4 py-2 text-sm dark:bg-gray-950 text-green-600 rounded-md shadow-lg hover:bg-gray-900 disabled:cursor-not-allowed"
-                        onClick={onRun}
-                        disabled={!user || loading}
-                    >
-                        {"Run"}
-                    </Button>
-                    <Button 
-                        className="px-4 py-2 text-sm dark:bg-gray-950 text-green-600 rounded-md shadow-lg hover:bg-gray-900 disabled:cursor-not-allowed"
-                        onClick={onSubmitClick}
-                        disabled={!user || loading}
-                    >
-                        {"Submit"}
-                    </Button>
-                </TabList>
-                <TabPanels className="px-4 py-2">
-                    {sampleTestCase?.length ? (
-                        <TabList className="flex flex-wrap gap-2 border-b border-gray-600 py-2 mb-4">
-                        {sampleTestCase.map((tc, idx) => (
-                            <Tab
-                            key={idx}
-                            className={({ selected}) =>
-                                `px-3 py-1 text-sm rounded-md  ${
-                                selected
-                                    ? "bg-gray-800 text-white"
-                                    : "text-gray-800 dark:text-white hover:bg-gray-800"
-                                }`
-                            }
-                            >
-                            Testcase {idx + 1}
-                            </Tab>
-                        ))}
-                        </TabList>
-                    ) : (
-                        <p className="text-sm text-gray-400">No sample testcases found.</p>
-                    )}
-
-                    {sampleTestCase.map((tc, idx) => (
-                        <TabPanel key={idx}>
-                        <div className="mb-4 bg-gray-900 p-4 rounded-md border border-gray-800">
-                            <p className="text-gray-400">
-                            <span className="font-medium">Input:</span>{" "}
-                            <code className="text-cyan-400">{tc.input}</code>
-                            </p>
-                            <p className="text-gray-400 mt-2">
-                            <span className="font-medium">Expected Output:</span>{" "}
-                            <code className="text-green-400">{tc.output}</code>
-                            </p>
-                        </div>
-                        </TabPanel>
-                    ))}
-                    </TabPanels>
-
-            </TabGroup>
             {user ? null : <span className="text-sm">Please login to submit</span>}
             {loading ? <span className="m-4 rounded-md text-green-600">{"Your Code is Executing"}</span> : null}
-                
-            {result && (
-                <div className="m-4 p-3 rounded bg-gray-100 dark:bg-gray-800 text-medium">
-                    <h2 className="font-semibold">Result</h2>
-                    <pre className={`${verdictColour(result.verdict)}`}>{verdictMessage(result.verdict)}</pre>
-                    {result.passed >=0  &&(
-                            <pre>{"Passed :"} {result.passed} </pre>
-                    )}
-                    {result.total &&(
-                            <pre>{"Total :"} {result.total} </pre>
-                    )}
-                    {result.error && (
-                        <pre className="text-red-500">{result.error}</pre>
-                    )}
-                </div>
-            )}
+            {result && result.error ? 
+            <div className="m-4 p-3 rounded bg-gray-100 dark:bg-gray-800 text-medium">
+                <span className="font-medium text-red-500">Error: {`${verdictMessage(result.verdict)}`}</span>
+                <pre className="text-red-500">{result.error}</pre>
+            </div>
+            :
+                    <TabGroup>                
+                    <TabList className="flex flex-wrap gap-2 border-b border-gray-600 py-2 mb-4 ml-2">
+                        {mode === "run" && sampleTestCase?.length ? (
+                            
+                            sampleTestCase.map((tc, idx) => {
+                                const tcResult = result?.results?.find(r => r.id === tc._id);
+                                return (
+                                <Tab
+                                key={idx}
+                                className={({ selected }) => {
+                                    const base = "px-3 py-1 text-sm rounded-md font-medium";
+                                    const verdictColor = 
+                                    tcResult?.passed === true ? "bg-green-600 text-white"
+                                    : tcResult?.passed === false ? "bg-red-600 text-white"
+                                    : selected ? "bg-gray-800 text-white"
+                                    : "text-gray-400 hover:bg-gray-800";
+                                
+                                    return `${base} ${verdictColor}`;
+                                }}
+                                >
+                                Testcase {idx + 1}
+                                </Tab>
+                            )})
+                            
+                        ) : mode === "submit" && result ? (
+                            <Tab className={`px-3 py-1 text-sm rounded-md font-medium ${result.verdict === "AC" ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}
+                            key={"submit"}>
+                                <span className="selected:bg-gray-800 selected:text-white px-3 py-1 text-sm rounded-md text-gray-400 hover:bg-gray-800 hover:text-white dark:hover:text-white ">
+                                    {"Result"}
+                                </span>
+                            </Tab>
+                        ) : null}
+                    </TabList>
+                    <TabPanels>
+                        {mode === "run" && sampleTestCase.map((tc, idx) => {
+                            const tcResult = result?.results?.find(r => r.id === tc._id);
+                            console.log(tcResult);
+                            return (
+                                <TabPanel key={idx}>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-md border border-gray-800 text-sm text-gray-100">
+                                <div className="space-y-4">
+                                    <div>
+                                        <span className="font-medium text-gray-400">Input:</span>
+                                        <pre className="bg-gray-800 text-cyan-400 p-3 rounded whitespace-pre-wrap font-mono">
+                                            {tc.input}
+                                        </pre>
+                                    </div>
+                                        <div>
+                                            <span className="font-medium text-gray-400">Expected Output:</span>
+                                            <pre className="bg-gray-800 text-green-400 p-3 rounded whitespace-pre-wrap font-mono">
+                                                {tc.output}
+                                            </pre>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <span className="font-medium text-gray-400">Your Output:</span>
+                                            <pre className={`bg-gray-800 ${tcResult?.passed ? "text-green-400" : "text-red-400"} p-3 rounded whitespace-pre-wrap font-mono`}>
+                                                {tcResult?.actual || "--"}
+                                            </pre>
+                                        </div>
+                                            <div>
+                                                <span className="font-medium">Verdict: </span>
+                                                <span className={tcResult?.passed ? "text-green-500 font-bold" : "text-red-500 font-bold"}>
+                                                    {tcResult?.passed ? "Passed" : "Failed"}
+                                                </span>
+                                            </div>
+                                        </div>
+                                </div>
+                            </TabPanel>
+                            )
+                        })}
+                        {mode === "submit" && result && (
+                            <TabPanel key={"submit"}>
+                                <div className="m-4 p-3 rounded bg-gray-100 dark:bg-gray-800 text-medium">
+                                    <pre className={`${verdictColour(result.verdict)}`}>{verdictMessage(result.verdict)}</pre>
+                                    {result.passed >=0  &&(
+                                        <pre>{"Passed :"} {result.passed} </pre>
+                                    )}
+                                    {result.total &&(
+                                        <pre>{"Total :"} {result.total} </pre>
+                                    )}
+                                    {result.error && (
+                                        <pre className="text-red-500">{result.error}</pre>
+                                    )}
+                                </div>
+                            </TabPanel>
+                        )}
+                    </TabPanels>
+                </TabGroup> 
+            }
+            
+
         </div>
     )
 }

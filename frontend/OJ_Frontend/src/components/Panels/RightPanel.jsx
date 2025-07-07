@@ -3,6 +3,7 @@ import CodeEditor from "../CodeEditor/CodeEditos";
 import LanguageSelector from "../CodeEditor/LanguageSelector";
 import { ThemeContext } from "../../context/ThemeContext";
 import { CodeContext } from "../../context/CodeContext";
+import SubmitButtons from "../Buttons/SubmitButtons";
 
 function RightPanel() {
 
@@ -13,7 +14,9 @@ function RightPanel() {
     return(
         <div className="h-full w-full flex flex-col bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-md">
             <div className="py-1 flex items-center justify-between bg-gray-100 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700">
-                <span className="flex items-center text-sm font-medium px-2">Code Editor</span>
+                <span className="flex items-center text-sm font-medium px-2">
+                    <SubmitButtons />
+                </span>
                 <span className="flex items-center text-sm font-medium px-2"><LanguageSelector selected={language} onChange={setLanguage} /></span>
             </div>
             <div className="flex-grow">

@@ -7,7 +7,7 @@ export const SocketContext = createContext(null);
 
 export const SocketProvider = ({ children }) => {
     const {user, setLoading} = useContext(AuthContext);
-    const [result, setResult] = useState([]);
+    const [result, setResult] = useState(null);
     const socketRef = useRef(null);
     useEffect(() => {
         if (!user?.id) return;

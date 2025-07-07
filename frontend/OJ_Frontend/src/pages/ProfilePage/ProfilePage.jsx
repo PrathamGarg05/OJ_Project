@@ -74,7 +74,7 @@ export default function ProfilePage() {
                           Accuracy
                       </p>
                       <p className="text-2xl font-bold text-yellow-400">
-                          {(userStats.problemsSolved && userStats.totalSubmissions) ? `${userStats.problemsSolved.length / userStats.totalSubmissions * 100}%` : "-- %"}
+                          {(userStats.problemsSolved && userStats.totalSubmissions) ? `${(userStats.problemsSolved.length / userStats.totalSubmissions * 100).toFixed(2)}%` : "-- %"}
                       </p>
                   </div>
                   <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
