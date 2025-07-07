@@ -1,7 +1,6 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { getHint } from '../../services/problem';
 import { Button } from '@headlessui/react';
-import { FaQuestion } from 'react-icons/fa';
 import { AuthContext } from '../../context/AuthContext';
 
 function HintsTab({problem}){

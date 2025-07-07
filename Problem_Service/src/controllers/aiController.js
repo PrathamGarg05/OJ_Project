@@ -9,3 +9,12 @@ export const getHint = async(req,res) => {
         return errorResponse(error, res);
     }
 };
+
+export const getBoilerplate = async(req,res) => {
+    try{
+        const boilerplate = await aiService.getBoilerplate(req.params.id, req.params.language);
+        return successResponse(boilerplate, StatusCodes.OK, "Boilerplate fetched successfully", res);
+    } catch(error){
+        return errorResponse(error, res);
+    }
+};

@@ -6,6 +6,7 @@ import { runProblem, sendSubmission } from "../../services/submit";
 import { Button } from "@headlessui/react";
 import { ProblemContext } from "../../context/ProblemContext";
 import { SubmitContext } from "../../context/SubmitContext";
+import {FaPlay, FaCloudUploadAlt} from "react-icons/fa";
 
 function SubmitButtons() {
 
@@ -42,14 +43,20 @@ function SubmitButtons() {
                 onClick={onRun}
                 disabled={!user || loading}
             >
-                {"Run"}
+                <div className="flex items-center gap-2">
+                    <FaPlay className="w-4 h-4" />
+                    <span>Run</span>
+                </div>  
             </Button>
             <Button
                 className="px-4 py-2 text-sm dark:bg-gray-950 text-green-600 rounded-md shadow-lg hover:bg-gray-900 disabled:cursor-not-allowed"
                 onClick={onSubmitClick}
                 disabled={!user || loading}
             >
-                {"Submit"}
+                <div className="flex items-center gap-2">
+                    <FaCloudUploadAlt className="w-4 h-4" />
+                    <span>Submit</span>
+                </div>
             </Button>
         </div>
     )

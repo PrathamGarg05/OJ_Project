@@ -7,3 +7,5 @@ export const getProblemDetails = (id) =>api.get(`/problems/${id}`);
 export const getSampleTestCase = (id) => api.get(`/problems/${id}/testcases/sample`);
 
 export const getHint = (id) => api.get(`/problems/${id}/hint`);
+
+export const getBoilerplate = (id, language) => api.get(`/problems/${id}/boilerplate/${language}`);

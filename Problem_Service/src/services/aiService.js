@@ -2,6 +2,7 @@ import { GEMINI_API_KEY, USER_SERVICE_URL } from "../config/serverConfig.js";
 import * as ProblemRepo from "../repositories/problemRepo.js";
 import { GoogleGenAI } from "@google/genai";
 import axios from "axios";
+import { StatusCodes } from "http-status-codes";
 
 export const getHint = async(problemId, userId) => {
     const problem = await ProblemRepo.getProblemById(problemId);
@@ -37,3 +38,30 @@ export const getHint = async(problemId, userId) => {
         throw error;
     }
 };
+
+export const getBoilerplate = async(problemId, language) => {
+    const problem = await ProblemRepo.getProblemById(problemId);
+    if(!problem) {
+        throw new Error("Problem not found");
+    }
+    const ai = new GoogleGenAI({
+        apiKey: GEMINI_API_KEY
+    });
+    try{
+        const response = await ai.models.generateContent({
+            model: "gemini-2.0-flash",
+            contents: `
+            You are a helpful assistant that can generate boilerplate code for a given problem.
+            The problem statement is: ${problem.description}
+            The language is: ${language}
+            Generate only boilerplate, not the complete solution.
+            like just include the header files and the main function, with the input format as given in the problem statement.
+            generate only the code, no other text like dont include the language name at start or end.
+            just start with header files.
+            `,
+          });
+          return response.text;
+    } catch(error){
+        throw error;
+    }
+};  

@@ -12,7 +12,7 @@ function LanguageSelector({ selected, onChange }) {
         <div className="w-40 px-2">
             <Listbox value={selected} onChange={onChange}>
                 <div className="relative ">
-                    <ListboxButton className="relative w-full cursor-pointer rounded-lg bg-gray-100 dark:bg-gray-800 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm hover:bg-gray-700">
+                    <ListboxButton className="relative w-full cursor-pointer rounded-lg bg-gray-100 dark:bg-gray-950 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm hover:bg-gray-700">
                         <span className="block truncate">{selected.name}</span>
                         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <FaChevronDown className="h-4 w-4 text-gray-500" />
