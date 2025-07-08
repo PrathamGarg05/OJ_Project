@@ -9,3 +9,5 @@ export const getSampleTestCase = (id) => api.get(`/problems/${id}/testcases/samp
 export const getHint = (id) => api.get(`/problems/${id}/hint`);
 
 export const getBoilerplate = (id, language) => api.get(`/problems/${id}/boilerplate/${language}`);
+
+export const getAiReview = (id, code) => api.post(`/problems/${id}/ai-review`, {code});

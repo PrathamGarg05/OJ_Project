@@ -5,6 +5,7 @@ import { ThemeContext } from "../../context/ThemeContext";
 import { CodeContext } from "../../context/CodeContext";
 import SubmitButtons from "../Buttons/SubmitButtons";
 import BoiletPlateButton from "../Buttons/boiletPlateButton";
+import AiReviewButton from "../Buttons/aiReviewButton";
 
 function RightPanel() {
 
@@ -18,6 +19,7 @@ function RightPanel() {
                 <span className="flex items-center text-sm font-medium px-2 gap-2">
                     <SubmitButtons />
                     <BoiletPlateButton />
+                    <AiReviewButton />
                 </span>
                 <span className="flex items-center text-sm font-medium px-2"><LanguageSelector selected={language} onChange={setLanguage} /></span>
             </div>

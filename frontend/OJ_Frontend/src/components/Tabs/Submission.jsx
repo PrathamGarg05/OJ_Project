@@ -1,10 +1,13 @@
 import { Button } from "@headlessui/react";
 import { useContext } from "react";
 import { CodeContext } from "../../context/CodeContext";
+import { languagesMap } from "../../utils/constants";
 
 function Submission({sub, problem}) {
-    const {setCode} = useContext(CodeContext);
+    const {setCode, setLanguage} = useContext(CodeContext);
     function handleSubmssionClick(sub) {
+        
+        setLanguage(languagesMap.find(lang => lang.value === sub.language));
         setCode(sub.code);
     }
     return (

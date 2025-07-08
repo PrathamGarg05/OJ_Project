@@ -18,3 +18,12 @@ export const getBoilerplate = async(req,res) => {
         return errorResponse(error, res);
     }
 };
+
+export const getAiReview = async(req, res) => {
+    try{
+        const aiReview = await aiService.getAiReview(req.params.id, req.body.code);
+        return successResponse(aiReview, StatusCodes.OK, "AI Review fetched successfully", res);
+    } catch(error){
+        return errorResponse(error, res);
+    }
+};

@@ -8,12 +8,16 @@ import { getProblemDetails } from "../../services/problem";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { ProblemContext } from "../../context/ProblemContext";
+import { CodeContext } from "../../context/CodeContext";
+import { languagesMap } from "../../utils/constants";
+import { defaultCodeMap } from "../../utils/constants";
 
 function ProblemDescription() {
 
     const {id} = useParams();
 
     const {problem, setProblem} = useContext(ProblemContext);
+    const{setCode, language, setLanguage} = useContext(CodeContext);
 
     const fetchProblem = async (id) => {
         if(id === "undefined") {
@@ -31,6 +35,8 @@ function ProblemDescription() {
 
     useEffect(() => {
         fetchProblem(id);
+        setLanguage(languagesMap[0]);
+        setCode(defaultCodeMap[language.value] || "");
     }, []);
 
     return (

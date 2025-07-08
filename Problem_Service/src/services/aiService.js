@@ -65,4 +65,31 @@ export const getBoilerplate = async(problemId, language) => {
     } catch(error){
         throw error;
     }
-};  
+};      
+
+export const getAiReview = async(problemId, code) => {
+    const problem = await ProblemRepo.getProblemById(problemId);
+    if(!problem) {
+        throw new Error("Problem not found");
+    }
+    const ai = new GoogleGenAI({
+        apiKey: GEMINI_API_KEY
+    });
+    try{
+        const response = await ai.models.generateContent({
+            model: "gemini-2.0-flash",
+            contents: `
+            You are a helpful assistant that can review a given code for a given problem.
+            The problem statement is: ${problem.description}
+            The code is: ${code}
+            Give a crisp review of the code, and suggest improvements.
+            Don't give the solution, just the review.
+            Don't give any other text, just the review.
+            if possible, give the time and space complexity of the code.
+            `,
+        });
+        return response.text;
+    } catch(error){
+        throw error;
+    }
+}

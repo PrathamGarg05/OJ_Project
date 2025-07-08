@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Problem from "./Problem";
 import { AuthContext } from "../../context/AuthContext";
 import { getUserStats } from "../../services/submit";
@@ -16,9 +16,9 @@ function ProbelmList({problems}){
 
     const isSolved = (problemId) => {return solvedProblems.includes(problemId)};
 
-    useEffect(() => {
+    if(user){
         getSolvedProblems(user.id);
-    }, [user])
+    }
 
     return(
        <div className="bg-gradient-to-b from-black via-gray-900 to-black text-white min-h-screen py-16 px-6">

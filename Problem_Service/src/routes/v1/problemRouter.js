@@ -3,7 +3,7 @@ import * as ProblemController from '../../controllers/problemController.js';
 import * as testcaseController from '../../controllers/testcaseController.js';
 import { authenticateToken, roleAuthorization } from '../../../../shared/middlewares/authMiddleware.js';
 import { JWT_SECRET } from '../../config/serverConfig.js';
-import { getBoilerplate, getHint } from '../../controllers/aiController.js';
+import { getAiReview, getBoilerplate, getHint } from '../../controllers/aiController.js';
 
 const problemRouter = express.Router();
 
@@ -26,5 +26,7 @@ problemRouter.get('/:id/testcases/sample',authenticateToken(JWT_SECRET), roleAut
 problemRouter.get('/:id/hint',authenticateToken(JWT_SECRET), roleAuthorization("admin","user"), getHint);
 
 problemRouter.get('/:id/boilerplate/:language',authenticateToken(JWT_SECRET), roleAuthorization("admin","user"), getBoilerplate);
+
+problemRouter.post('/:id/ai-review',authenticateToken(JWT_SECRET), roleAuthorization("admin","user"), getAiReview);
 
 export default problemRouter;
