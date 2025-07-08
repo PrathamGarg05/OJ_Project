@@ -8,6 +8,7 @@ export const SocketContext = createContext(null);
 export const SocketProvider = ({ children }) => {
     const {user, setLoading} = useContext(AuthContext);
     const [result, setResult] = useState(null);
+    const [customResult, setCustomResult] = useState(null);
     const socketRef = useRef(null);
     useEffect(() => {
         if (!user?.id) return;
@@ -26,6 +27,7 @@ export const SocketProvider = ({ children }) => {
         socketRef.current.on("submissionPayloadResponse", (data) => {
             console.log("Submission result received:", data);
             setResult(data);
+            setCustomResult(data);
             setLoading(false);
         });
 
@@ -35,7 +37,7 @@ export const SocketProvider = ({ children }) => {
     }, [user]);
 
     return (
-        <SocketContext.Provider value={{socketRef, result, setResult}}>
+        <SocketContext.Provider value={{socketRef, result, setResult, customResult, setCustomResult}}>
             {children}
         </SocketContext.Provider>
     );

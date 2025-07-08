@@ -6,6 +6,7 @@ import { SocketContext } from "../../context/SocketContext";
 import { getSampleTestCase } from "../../services/problem";
 import { SubmitContext } from '../../context/SubmitContext';
 import { CodeContext } from '../../context/CodeContext';
+import CustomTCTab from '../Tabs/customTCTab';
 
 function SubmitPanel() {
 
@@ -52,26 +53,40 @@ function SubmitPanel() {
                 <TabGroup>                
                     <TabList className="flex flex-wrap gap-2 border-b border-gray-600 py-2 mb-4 ml-2">
                         {mode === "run" && sampleTestCase?.length ? (
-                            
-                            sampleTestCase.map((tc, idx) => {
-                                const tcResult = result?.results?.find(r => r.id === tc._id);
-                                return (
-                                <Tab
-                                key={idx}
-                                className={({ selected }) => {
-                                    const base = "px-3 py-1 text-sm rounded-md font-medium";
-                                    const verdictColor = 
-                                    tcResult?.passed === true ? "bg-green-600 text-white"
-                                    : tcResult?.passed === false ? "bg-red-600 text-white"
-                                    : selected ? "bg-gray-800 text-white"
-                                    : "text-gray-400 hover:bg-gray-800";
-                                
-                                    return `${base} ${verdictColor}`;
-                                }}
-                                >
-                                    Testcase {idx + 1}
-                                </Tab>
-                            )})
+                        <>
+                        {sampleTestCase.map((tc, idx) => {
+                          const tcResult = result?.results?.find(r => r.id === tc._id);
+                          return (
+                            <Tab key={idx} className={({ selected }) => {
+                              const base = "px-3 py-1 text-sm rounded-md font-medium";
+                              const verdictColor =
+                                tcResult?.passed === true
+                                  ? "bg-green-600 text-white"
+                                  : tcResult?.passed === false
+                                  ? "bg-red-600 text-white"
+                                  : selected
+                                  ? "bg-gray-800 text-white"
+                                  : "text-gray-400 hover:bg-gray-800";
+                      
+                              return `${base} ${verdictColor}`;
+                            }}>
+                              Testcase {idx + 1}
+                            </Tab>
+                          );
+                        })}
+                        
+                        <Tab
+                          className={
+                            "px-3 py-1 text-sm rounded-md font-medium bg-gray-800 text-white"
+                          }
+                          key={"customTC"}
+                        >
+                          <span className="selected:bg-gray-800 selected:text-white px-3 py-1 text-sm rounded-md text-gray-400">
+                            {"Custom Testcase"}
+                          </span>
+                        </Tab>
+                      </>
+                      
                             
                         ) : mode === "submit" && result ? (
                             <Tab className={`px-3 py-1 text-sm rounded-md font-medium ${result.verdict === "AC" ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}
@@ -91,9 +106,11 @@ function SubmitPanel() {
                         )}
                     </TabList>
                     <TabPanels>
+                        <>
                         {mode === "run" && sampleTestCase.map((tc, idx) => {
                             const tcResult = result?.results?.find(r => r.id === tc._id);
                             return (
+                                
                                 <TabPanel key={idx}>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-md border border-gray-800 text-sm text-gray-100">
                                 <div className="space-y-4">
@@ -126,8 +143,12 @@ function SubmitPanel() {
                                         </div>
                                 </div>
                             </TabPanel>
+                            
+                                
                             )
                         })}
+                        {mode === "run" && <CustomTCTab />}
+                        </>
                         {mode === "submit" && result && (
                             <TabPanel key={"submit"}>
                                 <div className="m-4 p-3 rounded bg-gray-100 dark:bg-gray-800 text-medium">

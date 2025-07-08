@@ -13,12 +13,13 @@ function SubmitButtons() {
     const {user, loading, setLoading} = useContext(AuthContext);
     const {problem} = useContext(ProblemContext);
     const {code, language} = useContext(CodeContext);
-    const {setResult} = useContext(SocketContext);
+    const {setResult, setCustomResult} = useContext(SocketContext);
     const {mode, setMode} = useContext(SubmitContext);
     
     async function onSubmitClick() { 
         setLoading(true);
         setResult(null); 
+        setCustomResult(null);
         setMode("submit");
         const userId = user.id;
         const problemId = problem._id;
@@ -29,6 +30,7 @@ function SubmitButtons() {
     async function onRun() {
         setLoading(true);
         setResult(null);
+        setCustomResult(null);
         setMode("run");
         const userId = user.id;
         const problemId = problem._id;

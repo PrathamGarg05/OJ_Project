@@ -18,7 +18,33 @@ export default class SubmissionJob{
             const language = this.payload.language;
             const code = this.payload.code;
 
-            if(this.payload.type) {
+            if(this.payload.type == "custom") {
+                const testcase = this.payload.testcase;
+                const strategy = createExecutor(language);
+                if(strategy != null) {
+                    const response = await strategy.execute(code, testcase);
+                    console.log(response);
+                    if(response.status == "Completed") {
+                        console.log("Code executed successfully");
+                        console.log(response);
+                    } else {
+                        console.log("Code execution failed");
+                        console.log(response);
+                    }
+                    await axios.post('http://localhost:3005/sendPayload', {
+                        userId: userId,
+                        payload: {
+                            verdict: response.verdict,
+                            userId: userId,
+                            results: response.results,
+                            error : response?.error
+                        }
+                    });
+                }
+                
+            }
+
+            else if(this.payload.type == "run") {
                 const testcases = await getSampleTestcases(this.payload.problemId);
                 const strategy = createExecutor(language);
                 if(strategy != null) {
