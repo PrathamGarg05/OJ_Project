@@ -6,6 +6,7 @@ export const CodeContext = createContext();
 export const CodeProvider = ({ children }) => {
   const [language, setLanguage] = useState(languagesMap[0]);
   const [code, setCode] = useState(defaultCodeMap[language.value]);
+  const [aiReview, setAiReview] = useState(null);
 
   const updateLanguage = (lang) => {
     setLanguage(lang);
@@ -13,7 +14,7 @@ export const CodeProvider = ({ children }) => {
   };
 
   return (
-    <CodeContext.Provider value={{ language, code, setCode, setLanguage: updateLanguage }}>
+    <CodeContext.Provider value={{ language, code, setCode, setLanguage: updateLanguage, aiReview, setAiReview }}>
       {children}
     </CodeContext.Provider>
   );

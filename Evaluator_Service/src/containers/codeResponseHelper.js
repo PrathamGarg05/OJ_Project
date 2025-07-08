@@ -6,6 +6,7 @@ export const codeResponseHelper = async(loggerStream, rawLogBuffer, decodeDocker
 
         const stdout = decodeStream.stdout.toString();
         const stderr = decodeStream.stderr.toString();
+        console.log(decodeStream);
         if (stdout.includes("__COMPILE_ERROR__")) {
             rej({
                 verdict: "CE",

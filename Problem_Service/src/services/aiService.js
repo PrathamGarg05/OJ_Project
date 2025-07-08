@@ -83,9 +83,9 @@ export const getAiReview = async(problemId, code) => {
             The problem statement is: ${problem.description}
             The code is: ${code}
             Give a crisp review of the code, and suggest improvements.
-            Don't give the solution, just the review.
+            Don't give the solution, just a crisp review.
             Don't give any other text, just the review.
-            if possible, give the time and space complexity of the code.
+            give the review in markdown format.
             `,
         });
         return response.text;

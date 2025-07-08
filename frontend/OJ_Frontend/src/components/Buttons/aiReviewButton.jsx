@@ -7,13 +7,13 @@ import { ProblemContext } from "../../context/ProblemContext";
 function AiReviewButton() {
 
     const [loading, setLoading] = useState(false);
-    const {code} = useContext(CodeContext);
+    const {code, setAiReview} = useContext(CodeContext);
     const {problem} = useContext(ProblemContext);
 
     const generateAiReview = async () => {
         setLoading(true);
         const response = await getAiReview(problem._id, code);
-        console.log(response.data.data);
+        setAiReview(response.data.data);
         setLoading(false);
     }
     return (

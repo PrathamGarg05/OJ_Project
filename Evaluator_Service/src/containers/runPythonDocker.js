@@ -15,7 +15,7 @@ class PythonExecutor {
 
         let script = `
 echo "${code.replace(/"/g, '\\"')}" > main.py
-if ! python3 -m py_compile main.py 2>/dev/null; then
+if ! python3 -m py_compile main.py ; then
   echo "__COMPILE_ERROR__"
 else
 ${testcases.map(tc => `  echo '${tc.input}' | python3 main.py ; echo "---"`).join('\n')}

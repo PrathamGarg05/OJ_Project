@@ -5,6 +5,7 @@ import { ProblemContext } from "../../context/ProblemContext";
 import { SocketContext } from "../../context/SocketContext";
 import { getSampleTestCase } from "../../services/problem";
 import { SubmitContext } from '../../context/SubmitContext';
+import { CodeContext } from '../../context/CodeContext';
 
 function SubmitPanel() {
 
@@ -25,13 +26,13 @@ function SubmitPanel() {
     const {problem} = useContext(ProblemContext);
     const {result} = useContext(SocketContext);
     const {mode} = useContext(SubmitContext);
+    const {aiReview} = useContext(CodeContext);
 
     const[sampleTestCase, setSampleTestCase] = useState([]);
 
     async function fetchSampleTestCase(problemId) {
         const response = await getSampleTestCase(problemId);
         setSampleTestCase(response.data.data);
-        console.log(response.data.data);
     }
 
     useEffect(() => {
@@ -48,7 +49,7 @@ function SubmitPanel() {
                 <pre className="text-red-500">{result.error}</pre>
             </div>
             :
-                    <TabGroup>                
+                <TabGroup>                
                     <TabList className="flex flex-wrap gap-2 border-b border-gray-600 py-2 mb-4 ml-2">
                         {mode === "run" && sampleTestCase?.length ? (
                             
@@ -68,7 +69,7 @@ function SubmitPanel() {
                                     return `${base} ${verdictColor}`;
                                 }}
                                 >
-                                Testcase {idx + 1}
+                                    Testcase {idx + 1}
                                 </Tab>
                             )})
                             
@@ -80,11 +81,18 @@ function SubmitPanel() {
                                 </span>
                             </Tab>
                         ) : null}
+                        {aiReview && (
+                            <Tab className={`px-3 py-1 text-sm rounded-md font-medium bg-gray-800 text-white`}
+                            key={"aiReview"}>
+                                <span className="selected:bg-gray-800 selected:text-white px-3 py-1 text-sm rounded-md text-gray-400 hover:bg-gray-800 hover:text-white dark:hover:text-white ">
+                                    {"AI Review"}
+                                </span>
+                            </Tab>
+                        )}
                     </TabList>
                     <TabPanels>
                         {mode === "run" && sampleTestCase.map((tc, idx) => {
                             const tcResult = result?.results?.find(r => r.id === tc._id);
-                            console.log(tcResult);
                             return (
                                 <TabPanel key={idx}>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-md border border-gray-800 text-sm text-gray-100">
@@ -136,8 +144,16 @@ function SubmitPanel() {
                                 </div>
                             </TabPanel>
                         )}
+                        {aiReview && (
+                            <TabPanel key={"aiReview"}>
+                                <div className="m-4 p-3 rounded bg-gray-100 dark:bg-gray-800 text-medium ">
+                                    <pre className="text-gray-400 whitespace-pre-wrap font-mono">{aiReview}</pre>
+                                </div>
+                            </TabPanel>
+                        )}
                     </TabPanels>
-                </TabGroup> 
+                </TabGroup>
+                
             }
             
 
