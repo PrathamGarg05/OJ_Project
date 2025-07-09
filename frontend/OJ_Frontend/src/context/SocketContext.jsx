@@ -14,7 +14,7 @@ export const SocketProvider = ({ children }) => {
         if (!user?.id) return;
 
         // Initialize socket connection
-        socketRef.current = io("http://localhost:3005", {
+        socketRef.current = io("http://13.203.112.48:3005", {
             withCredentials: true,
         });
 

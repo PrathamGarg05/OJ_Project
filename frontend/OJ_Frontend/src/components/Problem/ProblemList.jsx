@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Problem from "./Problem";
 import { AuthContext } from "../../context/AuthContext";
 import { getUserStats } from "../../services/submit";
@@ -16,9 +16,11 @@ function ProbelmList({problems}){
 
     const isSolved = (problemId) => {return solvedProblems.includes(problemId)};
 
-    if(user){
-        getSolvedProblems(user.id);
-    }
+    useEffect(() => {
+        if(user){
+            getSolvedProblems(user.id);
+        }
+    }, [user]);
 
     return(
        <div className="dark:bg-black bg-white text-black min-h-screen py-16 px-6">
