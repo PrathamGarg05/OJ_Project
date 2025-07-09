@@ -16,12 +16,12 @@ function Problem({problem, index, solved}){
     };
     
     return (
-        <tr className="hover:bg-gray-800 transition border-t border-gray-700">
-            <td className="px-6 py-4 text-gray-400">{index + 1}</td>
+        <tr className="hover:dark:bg-gray-800 hover:bg-gray-200 transition border-t border-gray-700">
+            <td className="px-6 py-4 dark:text-gray-400 text-gray-800">{index + 1}</td>
             <td className="px-6 py-4">
                 <Link 
                     to={`/problems/${problem._id}`}
-                    className="text-cyan-400 hover:underline"
+                    className="dark:text-cyan-400 text-cyan-800 hover:underline"
                 >
                     {problem.title}
                 </Link>
@@ -31,8 +31,8 @@ function Problem({problem, index, solved}){
             </td>
             <td>
                 {solved ? 
-                    <span className="ml-2 text-green-500 font-medium">✔ Solved</span>
-                    : <span className="ml-2 text-gray-600 font-medium">--</span>
+                    <span className="ml-2 dark:text-green-500 text-green-800 font-medium">✔ Solved</span>
+                    : <span className="ml-2 dark:text-gray-600 text-gray-800 font-medium">--</span>
                 }
             </td>
         </tr>

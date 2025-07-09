@@ -32,7 +32,7 @@ function NavBar() {
                 {
                     user ? (
                             <Menu as="div" className="relative inline-block text-left">
-                                <MenuButton className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-md hover:bg-gray-700 dark:bg-gray-800 dark:text-white">
+                                <MenuButton className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-black bg-gray-100 rounded-md hover:dark:bg-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-white">
                                     {user.username}
                                 </MenuButton>
 

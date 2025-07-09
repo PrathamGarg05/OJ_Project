@@ -40,10 +40,10 @@ function ProblemDescription() {
     }, []);
 
     return (
-        <div className="flex flex-col h-dvh w-full bg-black">
+        <div className="flex flex-col h-dvh w-full dark:bg-black bg-white">
             <NavBar
             />
-            <main className="flex-1 overflow-hidden">
+            <main className="flex-1 overflow-hidden dark:bg-black bg-gray-200">
                 <PanelGroup direction="horizontal" className="h-full">
                     <Panel defaultSize={35} minSize={10} maxSize={90}>
                         <LeftPanel problem={problem}/>

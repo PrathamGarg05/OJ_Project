@@ -43,7 +43,7 @@ function SubmitPanel() {
     },[problem]);
 
     return(
-        <div className="h-full w-full bg-white dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-md">
+        <div className="h-full w-full bg-gray-100 dark:bg-gray-900 text-black dark:text-white overflow-y-auto rounded-md">
             {user ? null : <span className="text-sm">Please login to submit</span>}
             {loading ? <span className="m-4 rounded-md text-green-600">{"Your Code is Executing"}</span> : null}
             {result && result.error ? 
@@ -67,8 +67,8 @@ function SubmitPanel() {
                                   : tcResult?.passed === false
                                   ? "bg-red-600 text-white"
                                   : selected
-                                  ? "bg-gray-800 text-white"
-                                  : "text-gray-400 hover:bg-gray-800";
+                                  ? "bg-gray-200 dark:bg-gray-900 text-black dark:text-white"
+                                  : "text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-900";
                       
                               return `${base} ${verdictColor}`;
                             }}>
@@ -79,7 +79,7 @@ function SubmitPanel() {
                         
                         <Tab
                           className={
-                            "px-3 py-1 text-sm rounded-md font-medium bg-gray-800 text-white"
+                            "px-3 py-1 text-sm rounded-md font-medium bg-gray-300 dark:bg-gray-900 text-black dark:text-white"
                           }
                           key={"customTC"}
                         >
@@ -91,17 +91,17 @@ function SubmitPanel() {
                       
                             
                         ) : mode === "submit" && result ? (
-                            <Tab className={`px-3 py-1 text-sm rounded-md font-medium ${result.verdict === "AC" ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}
+                            <Tab className={`px-3 py-1 text-sm rounded-md font-medium ${result.verdict === "AC" ? "bg-green-600 dark:bg-green-900 dark:text-white text-black" : "bg-red-600 dark:bg-red-900 dark:text-white text-black"}`}
                             key={"submit"}>
-                                <span className="selected:bg-gray-800 selected:text-white px-3 py-1 text-sm rounded-md text-gray-400 hover:bg-gray-800 hover:text-white dark:hover:text-white ">
+                                <span className="selected:bg-gray-300 dark:selected:bg-gray-900 selected:text-white px-3 py-1 text-sm rounded-md dark:text-gray-400 text-gray-800 hover:text-white dark:hover:text-white ">
                                     {"Result"}
                                 </span>
                             </Tab>
                         ) : null}
                         {aiReview && (
-                            <Tab className={`px-3 py-1 text-sm rounded-md font-medium bg-gray-800 text-white`}
+                            <Tab className={`px-3 py-1 text-sm rounded-md font-medium bg-gray-300 dark:bg-gray-900 text-black dark:text-white`}
                             key={"aiReview"}>
-                                <span className="selected:bg-gray-800 selected:text-white px-3 py-1 text-sm rounded-md text-gray-400 hover:bg-gray-800 hover:text-white dark:hover:text-white ">
+                                <span className="selected:bg-gray-300 dark:selected:bg-gray-900 selected:text-white px-3 py-1 text-sm rounded-md text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-900 hover:text-white dark:hover:text-white ">
                                     {"AI Review"}
                                 </span>
                             </Tab>
@@ -114,17 +114,17 @@ function SubmitPanel() {
                             return (
                                 
                                 <TabPanel key={idx}>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-md border border-gray-800 text-sm text-gray-100">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-200 dark:bg-gray-900 p-4 rounded-md border border-gray-800 text-sm text-black dark:text-gray-100">
                                 <div className="space-y-4">
                                     <div>
-                                        <span className="font-medium text-gray-400">Input:</span>
-                                        <pre className="bg-gray-800 text-cyan-400 p-3 rounded whitespace-pre-wrap font-mono">
+                                        <span className="font-medium dark:text-gray-400 text-gray-800">Input:</span>
+                                        <pre className="bg-gray-300 dark:bg-gray-900 dark:text-cyan-400 text-cyan-800 p-3 rounded whitespace-pre-wrap font-mono">
                                             {tc.input}
                                         </pre>
                                     </div>
                                         <div>
-                                            <span className="font-medium text-gray-400">Expected Output:</span>
-                                            <pre className="bg-gray-800 text-green-400 p-3 rounded whitespace-pre-wrap font-mono">
+                                            <span className="font-medium dark:text-gray-400 text-gray-800">Expected Output:</span>
+                                            <pre className="bg-gray-300 dark:bg-gray-900 dark:text-green-400 text-green-800 p-3 rounded whitespace-pre-wrap font-mono">
                                                 {tc.output}
                                             </pre>
                                         </div>
@@ -132,7 +132,7 @@ function SubmitPanel() {
                                     <div className="space-y-4">
                                         <div>
                                             <span className="font-medium text-gray-400">Your Output:</span>
-                                            <pre className={`bg-gray-800 ${tcResult?.passed ? "text-green-400" : "text-red-400"} p-3 rounded whitespace-pre-wrap font-mono`}>
+                                                <pre className={`bg-gray-300 dark:bg-gray-900 ${tcResult?.passed ? "dark:text-green-400 text-green-800" : "dark:text-red-400 text-red-800"} p-3 rounded whitespace-pre-wrap font-mono`}>
                                                 {tcResult?.actual || "--"}
                                             </pre>
                                         </div>
@@ -170,7 +170,7 @@ function SubmitPanel() {
                         {aiReview && (
                             <TabPanel key={"aiReview"}>
                                 <div className="m-4 p-3 rounded bg-gray-100 dark:bg-gray-800 text-medium ">
-                                    <pre className="text-gray-400 whitespace-pre-wrap font-mono">{aiReview}</pre>
+                                    <pre className="dark:text-gray-400 text-gray-800 whitespace-pre-wrap font-mono">{aiReview}</pre>
                                 </div>
                             </TabPanel>
                         )}

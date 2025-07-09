@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { INTERNAL_API_KEY } from '../config/serverConfig.js';
+import { INTERNAL_API_KEY, PROBLEM_URL } from '../config/serverConfig.js';
 
 export async function getTestcases(problemId) {
   const response = await axios.get(
-    `http://localhost:4000/internal-api/internal/problems/${problemId}/testcases`,
+    `${PROBLEM_URL}/problems/${problemId}/testcases`,
     {
       headers: {
         'x-internal-api-key': INTERNAL_API_KEY,
@@ -15,7 +15,7 @@ export async function getTestcases(problemId) {
 
 export async function getSampleTestcases(problemId) {
   const response = await axios.get(
-    `http://localhost:4000/internal-api/internal/problems/${problemId}/sampleTestcases`,
+    `${PROBLEM_URL}/problems/${problemId}/sampleTestcases`,
     {
       headers: {
         'x-internal-api-key': INTERNAL_API_KEY,

@@ -22,7 +22,7 @@ function ProbelmsPage(){
     },[]);
 
     return (
-      <div className="bg-gradient-to-b from-black via-gray-900 to-black text-white min-h-screen flex flex-col">
+      <div className="dark:bg-black bg-white text-black min-h-screen flex flex-col">
         <NavBar />
         <ProbelmList problems={problems}/>
       </div>

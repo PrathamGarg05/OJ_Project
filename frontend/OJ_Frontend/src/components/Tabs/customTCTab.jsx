@@ -29,18 +29,18 @@ function CustomTCTab() {
 
     return (
         <TabPanel key={"customTC"}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-900 p-4 rounded-md border border-gray-800 text-sm text-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-200 dark:bg-gray-900 p-4 rounded-md border border-gray-800 text-sm text-black dark:text-gray-100">
                 <div className="space-y-4">
                     <div >
-                        <span className="font-medium text-gray-400 m-2">Input: </span>
-                        <textarea className="bg-gray-800 text-gray-100 p-3 rounded whitespace-pre-wrap font-mono"
+                        <span className="font-medium dark:text-gray-400 text-gray-800 m-2">Input: </span>
+                        <textarea className="bg-gray-300 dark:bg-gray-900 dark:text-gray-100 text-gray-800 p-3 rounded whitespace-pre-wrap font-mono"
                              value={input}
                              onChange={(e) => setInput(e.target.value)}
                         />
                     </div>
                     {customResult && <div>
-                        <span className="font-medium text-gray-400 m-2">Output: </span>
-                        <textarea className="bg-gray-800 text-gray-100 p-3 rounded whitespace-pre-wrap font-mono"
+                        <span className="font-medium dark:text-gray-400 text-gray-800 m-2">Output: </span>
+                        <textarea className="bg-gray-300 dark:bg-gray-900 dark:text-gray-100 text-gray-800 p-3 rounded whitespace-pre-wrap font-mono"
                             value={output}
                             disabled
                         />
@@ -48,7 +48,7 @@ function CustomTCTab() {
                 </div>
                 <div className="flex justify-end items-end">
                     <Button 
-                        className="bg-gray-800 text-gray-100 p-3 rounded whitespace-pre-wrap font-mono hover:bg-gray-700 hover:text-white disabled:cursor-not-allowed"
+                        className="dark:bg-gray-800 bg-gray-300 dark:text-gray-100 text-gray-800 p-3 rounded whitespace-pre-wrap font-mono hover:dark:bg-gray-700 hover:bg-gray-400 hover:text-white disabled:cursor-not-allowed"
                         onClick={handleRun}
                         disabled={loading}
                     >Run</Button>

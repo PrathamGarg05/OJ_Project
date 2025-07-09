@@ -2,6 +2,7 @@ import createExecutor from "../utils/ExecutorFactory.js";
 import evaluationQueueProducer from "../producers/evaluationQueueProducer.js";
 import { getSampleTestcases, getTestcases } from "../utils/fetchTestcases.js";
 import axios from 'axios';
+import { SOCKET_SERVICE } from '../config/serverConfig.js';
 export default class SubmissionJob{
     name;
     payload;
@@ -31,7 +32,7 @@ export default class SubmissionJob{
                         console.log("Code execution failed");
                         console.log(response);
                     }
-                    await axios.post('http://localhost:3005/sendPayload', {
+                    await axios.post(`${SOCKET_SERVICE}/sendPayload`, {
                         userId: userId,
                         payload: {
                             verdict: response.verdict,
@@ -56,7 +57,7 @@ export default class SubmissionJob{
                         console.log("Code execution failed");
                         console.log(response);
                     }
-                    await axios.post('http://localhost:3005/sendPayload', {
+                    await axios.post(`${SOCKET_SERVICE}/sendPayload`, {
                         userId: userId,
                         payload: {
                             verdict: response.verdict,
