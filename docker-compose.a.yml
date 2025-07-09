@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+
+  User_Service:
+    image: user_service
+    build:
+      context: ./User_Service
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./User_Service/.env
+
+  Problem_Service:
+    image: problem_service
+    build:
+      context: ./Problem_Service
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./Problem_Service/.env
+
+  apiGateway:
+    image: api_gateway
+    build:
+      context: ./apiGateway
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./apiGateway/.env
+    depends_on:
+      - User_Service
+      - Problem_Service
