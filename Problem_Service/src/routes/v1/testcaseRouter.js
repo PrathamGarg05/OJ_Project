@@ -1,6 +1,6 @@
 import express from 'express';
 import * as testcaseController from '../../controllers/testcaseController.js';
-import { authenticateToken, roleAuthorization } from '../../../../shared/middlewares/authMiddleware.js';
+import { authenticateToken, roleAuthorization } from '../../middlewares/authMiddleware.js';
 import { JWT_SECRET } from '../../config/serverConfig.js';
 import { Testcase } from '../../models/Testcase.js';
 const testcaseRouter = express.Router();

@@ -2,6 +2,8 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import {Redis} from 'ioredis';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
@@ -41,6 +43,6 @@ app.post('/sendPayload' , async(req,res) => {
     return true;
 })
 
-httpServer.listen(3005, () => {
-    console.log(`Server up at 3005`);
+httpServer.listen(process.env.PORT, () => {
+    console.log(`Server up at ${process.env.PORT}`);
 });

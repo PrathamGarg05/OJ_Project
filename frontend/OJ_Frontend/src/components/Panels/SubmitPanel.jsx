@@ -14,6 +14,7 @@ function SubmitPanel() {
         if(verdict == "AC") return "text-green-500";
         else if(verdict == "WA") return "text-red-500";
         else if(verdict == "CE" || verdict == "RE") return "text-yellow-500";
+        else if(verdict == "TLE") return "text-red-500";
     }
 
     function verdictMessage(verdict) {
@@ -21,6 +22,7 @@ function SubmitPanel() {
         else if(verdict == "WA") return "Wrong Answer";
         else if(verdict == "CE" ) return "Compilation Error";
         else if(verdict == "RE") return "Runtime Error";
+        else if(verdict == "TLE") return "Time Limit Exceeded";
     }
 
     const {user, loading} = useContext(AuthContext);

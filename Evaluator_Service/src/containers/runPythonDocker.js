@@ -46,7 +46,7 @@ fi
         }); 
 
         try{
-            const codeResponse = await codeResponseHelper(loggerStream, rawLogBuffer, decodeDockerStream);
+            const codeResponse = await codeResponseHelper(loggerStream, rawLogBuffer, decodeDockerStream, 4000);
             console.log("Full Raw Output:\n", codeResponse);
 
             const {results, verdict, totalC, wrongC} = outputMatcher(codeResponse, testcases);
@@ -62,6 +62,9 @@ fi
             };
 
         } catch(err){
+            if(err.verdict === "TLE"){
+                await pythonDocker.kill();
+            }
             return err;
         } finally{
             await pythonDocker.remove();

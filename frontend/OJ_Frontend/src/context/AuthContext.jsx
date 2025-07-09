@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
   const userLogout = async() => {
     await logout();
     setUser(null);
-    
   }
 
 //   const logout = async () => {
@@ -44,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 //   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading ,userLogout, setLoading}}>
+    <AuthContext.Provider value={{ user,setUser, loading ,userLogout, setLoading}}>
       {children}
     </AuthContext.Provider>
   );

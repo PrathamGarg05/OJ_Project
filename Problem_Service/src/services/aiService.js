@@ -92,4 +92,4 @@ export const getAiReview = async(problemId, code) => {
     } catch(error){
         throw error;
     }
-}
+};

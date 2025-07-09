@@ -56,7 +56,7 @@ function NavBar() {
                                             {({ active }) => (
                                                 <button
                                                 onClick={() => {
-                                                    userLogout;
+                                                    userLogout();
                                                     navigate('/login');
                                                 }}
                                                 className={`${

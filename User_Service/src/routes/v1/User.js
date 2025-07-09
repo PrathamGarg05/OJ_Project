@@ -1,6 +1,6 @@
 import express from 'express';
 import { getAllUsers, login, myProfile, registerUser, useHint } from '../../controllers/userController.js';
-import { authenticateToken, roleAuthorization } from '../../../../shared/middlewares/authMiddleware.js';
+import { authenticateToken, roleAuthorization } from '../../middlewares/authMiddleware.js';
 import { JWT_SECRET } from '../../config/serverConfig.js';
 const userRouter = express.Router();
 
