@@ -1,8 +1,12 @@
 import AuthForm from "../../components/AuthForm/AuthForm";
+import NavBar from "../../components/NavBar/NavBar";
 
 function RegisterPage() {
     return (
-        <AuthForm type="register"/>
+        <>
+            <NavBar />
+            <AuthForm type="register"/>
+        </>
     )
 }
 

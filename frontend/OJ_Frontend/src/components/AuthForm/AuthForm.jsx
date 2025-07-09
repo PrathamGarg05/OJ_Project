@@ -60,9 +60,9 @@ function AuthForm({type = 'login'}) {
     }
 
     return(
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6">
-                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+        <div className="min-h-screen flex items-center justify-center dark:bg-gray-900 bg-gray-100 px-4">
+            <div className="w-full max-w-md dark:bg-gray-900 bg-gray-100 rounded-2xl shadow-lg p-8 space-y-6 dark:text-white text-gray-800 dark:border-gray-700 border-gray-300 border-2">
+                <h2 className="text-2xl font-bold text-center mb-6 dark:text-white text-gray-800">
                     {type == 'login' ? 'Welcome Back' : 'Register'}
                 </h2>
                 <form action="post" onSubmit={onSubmitHandler}
@@ -70,8 +70,9 @@ function AuthForm({type = 'login'}) {
                 >
                 
                     {type == 'register' && (
-                        <div>
+                        <div className="dark:bg-gray-900 dark:text-white text-gray-800 bg-gray-100">
                             <TextInput 
+                                
                                 placeholder="Username"
                                 label="Username"
                                 type="text"
@@ -79,16 +80,18 @@ function AuthForm({type = 'login'}) {
                             />
                         </div>
                     )}
-                    <div>
+                    <div className="dark:bg-gray-900 dark:text-white text-gray-800 bg-gray-100">
                         <TextInput 
+                            
                             placeholder="Email"
                             label="Email"
                             type="email"
                             onChangeHandler={handleTextInputChange}
                         />
                     </div>
-                    <div>
+                    <div className="dark:bg-gray-900 dark:text-white text-gray-800 bg-gray-100">
                         <TextInput 
+                            
                             placeholder="Password"
                             label="Password"
                             type="password"
@@ -96,8 +99,9 @@ function AuthForm({type = 'login'}) {
                         />
                     </div>
                     {type == 'register' && (
-                        <div>
+                        <div className="dark:bg-gray-900 dark:text-white text-gray-800 bg-gray-100">
                             <TextInput 
+                                
                                 placeholder="Confirm Password"
                                 label="Confirm Password"
                                 type="password"
@@ -117,14 +121,14 @@ function AuthForm({type = 'login'}) {
                         {type == 'login' ? (
                             <>
                                 Don't have an account?{' '} 
-                                <Link to={{pathname:'/register'}} className="text-gray-950 hover:text-gray-800 transition" >
+                                <Link to={{pathname:'/register'}} className="dark:text-gray-400 text-gray-800 hover:text-gray-800 transition" >
                                     Register
                                 </Link>
                             </>
                         ) : (
                             <>
                                 Already have an account?{' '} 
-                                <Link to={{pathname:'/login'}} className="text-gray-950  hover:text-gray-800 transition">
+                                <Link to={{pathname:'/login'}} className="dark:text-gray-400 text-gray-800 hover:text-gray-800 transition">
                                     Login
                                 </Link>
                             </>
