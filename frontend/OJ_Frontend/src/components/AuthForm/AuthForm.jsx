@@ -22,6 +22,7 @@ function AuthForm({type = 'login'}) {
         try{
             if(type == 'register'){
                 if(password != cnfPassword) {
+                    toast.error("Passwords don't match");
                     throw{
                         message: "Passwords don't match",
                         success: false
@@ -29,6 +30,7 @@ function AuthForm({type = 'login'}) {
                 }
                 const res = await register({username, email, password});
                 console.log("Registration successful", res.data);
+                toast.success("Registration successful");
             }
             else if(type == 'login'){
                 const res = await login({email, password});
@@ -37,6 +39,7 @@ function AuthForm({type = 'login'}) {
                 if(profile) {
                     setUser(profile.data.data.user);
                 }
+                toast.success("Login successful");
             }
             {type == 'login' ? navigate('/problems') : navigate('/login')}
             
