@@ -4,6 +4,7 @@ import { login, myProfile, register } from "../../services/auth";
 import Button from "../Buttons/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 function AuthForm({type = 'login'}) {
 
@@ -40,7 +41,13 @@ function AuthForm({type = 'login'}) {
             {type == 'login' ? navigate('/problems') : navigate('/login')}
             
         } catch(error){
-            console.log(`${type=='login' ? 'Login Failed' : 'Registration Failed'}`, error.response.data.message);
+            if(error.response.data.message){
+                console.log(`${type=='login' ? 'Login Failed' : 'Registration Failed'}`, error.response.data.message);
+                toast.error(error.response.data.message);
+            }
+            else{
+                console.log(`${type=='login' ? 'Login Failed' : 'Registration Failed'}`, error.message);
+            }
         }
     }
 
