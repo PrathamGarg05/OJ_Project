@@ -5,6 +5,7 @@ import Button from "../Buttons/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function AuthForm({type = 'login'}) {
 
@@ -12,6 +13,7 @@ function AuthForm({type = 'login'}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const {setUser} = useContext(AuthContext);
+    const [showPassword, setShowPassword] = useState(false);
 
     const [cnfPassword, setCnfPassword] = useState('');
 
@@ -101,22 +103,29 @@ function AuthForm({type = 'login'}) {
                     </div>
                     <div className="dark:bg-gray-900 dark:text-white text-gray-800 bg-gray-100">
                         <TextInput 
-                            
+                            className="flex items-center justify-between"
                             placeholder="Password"
                             label="Password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             onChangeHandler={handleTextInputChange}
                         />
+                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-sm text-gray-400">
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
                     </div>
                     {type == 'register' && (
                         <div className="dark:bg-gray-900 dark:text-white text-gray-800 bg-gray-100">
                             <TextInput 
-                                
+                                className="flex items-center justify-between"
                                 placeholder="Confirm Password"
                                 label="Confirm Password"
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 onChangeHandler={handleTextInputChange}
                             />
+                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-sm text-gray-400">
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+
                         </div>
                     )}
                     <div>
