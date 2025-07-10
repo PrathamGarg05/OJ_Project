@@ -118,13 +118,13 @@ function SubmitPanel() {
                                 <div className="space-y-4">
                                     <div>
                                         <span className="font-medium dark:text-gray-400 text-gray-800">Input:</span>
-                                        <pre className="bg-gray-300 dark:bg-gray-900 dark:text-cyan-400 text-cyan-800 p-3 rounded whitespace-pre-wrap font-mono">
+                                        <pre className="bg-gray-300 dark:bg-gray-800 dark:text-cyan-400 text-cyan-800 p-3 rounded whitespace-pre-wrap font-mono">
                                             {tc.input}
                                         </pre>
                                     </div>
                                         <div>
                                             <span className="font-medium dark:text-gray-400 text-gray-800">Expected Output:</span>
-                                            <pre className="bg-gray-300 dark:bg-gray-900 dark:text-green-400 text-green-800 p-3 rounded whitespace-pre-wrap font-mono">
+                                            <pre className="bg-gray-300 dark:bg-gray-800 dark:text-green-400 text-green-800 p-3 rounded whitespace-pre-wrap font-mono">
                                                 {tc.output}
                                             </pre>
                                         </div>
@@ -132,7 +132,7 @@ function SubmitPanel() {
                                     <div className="space-y-4">
                                         <div>
                                             <span className="font-medium text-gray-400">Your Output:</span>
-                                                <pre className={`bg-gray-300 dark:bg-gray-900 ${tcResult?.passed ? "dark:text-green-400 text-green-800" : "dark:text-red-400 text-red-800"} p-3 rounded whitespace-pre-wrap font-mono`}>
+                                                <pre className={`bg-gray-300 dark:bg-gray-800 ${tcResult?.passed ? "dark:text-green-400 text-green-800" : "dark:text-red-400 text-red-800"} p-3 rounded whitespace-pre-wrap font-mono`}>
                                                 {tcResult?.actual || "--"}
                                             </pre>
                                         </div>
