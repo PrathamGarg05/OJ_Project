@@ -14,8 +14,9 @@ export const SocketProvider = ({ children }) => {
         if (!user?.id) return;
 
         // Initialize socket connection
-        socketRef.current = io("http://13.203.112.48:3005", {
+        socketRef.current = io("https://socket.code-nest.live", {
             withCredentials: true,
+            transports: ["websocket"]
         });
 
         socketRef.current.emit("setUserId", user.id);
