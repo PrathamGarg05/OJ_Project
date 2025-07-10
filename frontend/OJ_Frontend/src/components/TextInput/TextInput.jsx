@@ -9,6 +9,7 @@ function TextInput({placeholder = "enter your text here...",label, type="text", 
                 value={value}
                 onChange={onChangeHandler}
                 className="w-full mt-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                
             />
         </label>
     )

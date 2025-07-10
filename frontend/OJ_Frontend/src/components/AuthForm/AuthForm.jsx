@@ -14,6 +14,7 @@ function AuthForm({type = 'login'}) {
     const [password, setPassword] = useState('');
     const {setUser} = useContext(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
+    const [showCnfPassword, setShowCnfPassword] = useState(false);
 
     const [cnfPassword, setCnfPassword] = useState('');
 
@@ -119,13 +120,12 @@ function AuthForm({type = 'login'}) {
                                 className="flex items-center justify-between"
                                 placeholder="Confirm Password"
                                 label="Confirm Password"
-                                type={showPassword ? "text" : "password"}
+                                type={showCnfPassword ? "text" : "password"}
                                 onChangeHandler={handleTextInputChange}
                             />
-                            <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-sm text-gray-400">
-                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            <button type="button" onClick={() => setShowCnfPassword(!showCnfPassword)} className="text-sm text-gray-400">
+                                {showCnfPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>
-
                         </div>
                     )}
                     <div>
