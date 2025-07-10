@@ -40,7 +40,7 @@ function AuthForm({type = 'login'}) {
             {type == 'login' ? navigate('/problems') : navigate('/login')}
             
         } catch(error){
-            console.log(`${type=='login' ? 'Login Failed' : 'Registration Failed'}`, error.message);
+            console.log(`${type=='login' ? 'Login Failed' : 'Registration Failed'}`, error);
         }
     }
 
