@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage"
 
 function App() {
   return (
+    <>
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
@@ -17,6 +18,15 @@ function App() {
       <Route path='/problems/:id' element={<ProblemDescription />} />
       <Route path="/profile" element={<ProfilePage />} />
     </Routes>
+    <ToastContainer 
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+    />
+    </>
   )
 }
 
