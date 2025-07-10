@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext} from 'react';
 import { getHint } from '../../services/problem';
 import { Button } from '@headlessui/react';
 import { AuthContext } from '../../context/AuthContext';
@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/AuthContext';
 function HintsTab({problem}){
     const [hint, setHint] = useState("");
     const [loading, setLoading] = useState(false);
-    const {user} = useContext(AuthContext);
+    const {user, setUser} = useContext(AuthContext);
     const [hintUsed, setHintUsed] = useState(user.hintUsage.count);
 
     const probHint = async() => {
@@ -16,6 +16,7 @@ function HintsTab({problem}){
             console.log(res.data.data);
             setHint(res.data.data); 
             setHintUsed(prev => prev + 1);
+            setUser(prev => ({...prev, hintUsage: {...prev.hintUsage, count: prev.hintUsage.count + 1}}));
             setLoading(false);
         }catch(error){
             console.log(error);

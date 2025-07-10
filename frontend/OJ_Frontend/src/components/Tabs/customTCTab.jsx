@@ -33,14 +33,14 @@ function CustomTCTab() {
                 <div className="space-y-4">
                     <div >
                         <span className="font-medium dark:text-gray-400 text-gray-800 m-2">Input: </span>
-                        <textarea className="bg-gray-300 dark:bg-gray-900 dark:text-gray-100 text-gray-800 p-3 rounded whitespace-pre-wrap font-mono"
+                        <textarea className="bg-gray-300 dark:bg-gray-800 dark:text-gray-100 text-gray-800 p-3 rounded whitespace-pre-wrap font-mono"
                              value={input}
                              onChange={(e) => setInput(e.target.value)}
                         />
                     </div>
                     {customResult && <div>
                         <span className="font-medium dark:text-gray-400 text-gray-800 m-2">Output: </span>
-                        <textarea className="bg-gray-300 dark:bg-gray-900 dark:text-gray-100 text-gray-800 p-3 rounded whitespace-pre-wrap font-mono"
+                        <textarea className="bg-gray-300 dark:bg-gray-800 dark:text-gray-100 text-gray-800 p-3 rounded whitespace-pre-wrap font-mono"
                             value={output}
                             disabled
                         />
