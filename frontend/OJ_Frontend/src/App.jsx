@@ -5,6 +5,7 @@ import ProbelmsPage from "./pages/ProblemPage/ProblemPage"
 import ProblemDescription from "./pages/ProblemDescription/ProblemDescription"
 import HomePage from "./pages/HomePage/HomePage"
 import ProfilePage from "./pages/ProfilePage/ProfilePage"
+import { ToastContainer } from "react-toastify"
 
 
 function App() {
