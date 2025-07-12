@@ -10,9 +10,7 @@ export const registerUser = async (req,res) => {
             password: req.body.password,
             role: req.body.role
         });
-        return successResponse({
-            user : {id: response._id, email: response.email, username: response.username, role: response.role}
-        }, StatusCodes.CREATED, "User registered successfully", res);
+        return successResponse(response, StatusCodes.CREATED, "User registered successfully", res);
     } catch(error){
         return errorResponse(error, res);
     }
@@ -68,6 +66,15 @@ export const useHint = async(req,res) => {
     try{
         const response = await UserService.useHint(req.params.id);
         return successResponse(response, StatusCodes.OK, "Hint used successfully", res);
+    }catch(error){
+        return errorResponse(error, res);
+    }
+};
+
+export const verifyEmail = async(req,res) => {
+    try{
+        const response = await UserService.verifyEmail(req.body.token);
+        return successResponse(response, StatusCodes.OK, "Email verified successfully", res);
     }catch(error){
         return errorResponse(error, res);
     }

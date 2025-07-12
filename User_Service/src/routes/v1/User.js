@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllUsers, login, myProfile, registerUser, useHint } from '../../controllers/userController.js';
+import { getAllUsers, login, myProfile, registerUser, useHint, verifyEmail } from '../../controllers/userController.js';
 import { authenticateToken, roleAuthorization } from '../../middlewares/authMiddleware.js';
 import { JWT_SECRET } from '../../config/serverConfig.js';
 const userRouter = express.Router();
@@ -27,5 +27,9 @@ userRouter.post('/logout', authenticateToken(JWT_SECRET), (req,res) => {
 });
 
 userRouter.patch('/:id/hint', useHint);
+
+userRouter.post('/verify-email', verifyEmail);
+
+
 
 export default userRouter;

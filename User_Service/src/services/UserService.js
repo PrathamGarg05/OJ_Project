@@ -2,6 +2,7 @@ import { StatusCodes} from 'http-status-codes';
 import * as UserRepo from '../repositories/UserRepo.js';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../utils/jwtUtils.js';
+import { sendVerificationEmail } from '../utils/emailUtils.js';
 
 export const register = async ({username, email, password, role}) => {
     if(await UserRepo.findUserByUsername(username)){
@@ -17,8 +18,17 @@ export const register = async ({username, email, password, role}) => {
             status: StatusCodes.BAD_REQUEST
         };
     }
-    const user = await UserRepo.register({username, email, password, role});
-    return user;
+    const user = await UserRepo.register({username, email, password, role, isVerified: false});
+    const verificationToken = generateToken(user);
+    user.verificationToken = verificationToken;
+    await user.save();
+    const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
+    const emailResponse = await sendVerificationEmail(email, verificationLink);
+    console.log(emailResponse);
+    return {
+        message: "User registered successfully",
+        status: StatusCodes.CREATED
+    };
 };
 
 export const login = async ({ email, password}) => {
@@ -34,6 +44,12 @@ export const login = async ({ email, password}) => {
     if(!isPasswordValid){
         throw {
             message: "Invalid Email or Password",
+            status: StatusCodes.BAD_REQUEST
+        };
+    }
+    if(!user.isVerified){
+        throw{
+            message: "Email not verified",
             status: StatusCodes.BAD_REQUEST
         };
     }
@@ -82,6 +98,33 @@ export const useHint = async(id) => {
         return {
             message: "Hint used successfully",
             status: StatusCodes.OK
+        };
+    }catch(error){
+        throw error;
+    }
+};
+
+export const verifyEmail = async(token) => {
+    try{
+        const user = await UserRepo.findUserByVerificationToken(token);
+        if(!user){
+            throw{
+                message: "Invalid verification token",
+                status: StatusCodes.BAD_REQUEST
+            };
+        }
+        if(user.isVerified){
+            throw{
+                message: "Email already verified",
+                status: StatusCodes.BAD_REQUEST
+            };
+        }
+        user.isVerified = true;
+        user.verificationToken = null;
+        await user.save();
+        return {
+                message: "Email verified successfully",
+                status: StatusCodes.OK
         };
     }catch(error){
         throw error;
