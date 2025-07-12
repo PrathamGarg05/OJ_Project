@@ -19,7 +19,7 @@ function App() {
       <Route path="/problems" element={<ProbelmsPage />}/>
       <Route path='/problems/:id' element={<ProblemDescription />} />
       <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/verify-email?token" element={<VerifyEmail />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
     </Routes>
     <ToastContainer 
       position="top-right"

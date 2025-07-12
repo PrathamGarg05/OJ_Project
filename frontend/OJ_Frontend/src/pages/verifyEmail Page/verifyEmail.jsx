@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { verifyEmail } from "../../services/auth";
 
 function VerifyEmail() {
-    const { token } = useParams();
+    const [searchParams] = useSearchParams();
     useEffect(() => {
         const verifyEmailHandler = async () => {
-            const response = await verifyEmail(token);
+            const response = await verifyEmail(searchParams.get("token"));
             if(response.status === 200){
                 navigate("/login");
             }
