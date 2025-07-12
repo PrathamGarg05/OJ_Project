@@ -33,7 +33,7 @@ function AuthForm({type = 'login'}) {
                 }
                 const res = await register({username, email, password});
                 console.log("Registration successful", res.data);
-                toast.success("Registration successful");
+                toast.success("Registration successful. Please Verify your email.");
             }
             else if(type == 'login'){
                 const res = await login({email, password});
