@@ -27,6 +27,22 @@ const UserSchema = new mongoose.Schema({
     hintUsage: {
         count: { type: Number, default: 0 },
         lastUsed: { type: String }
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    verificationToken: {
+        type: String,
+        default: null
+    },
+    resetToken: {
+        type: String,
+        default: null
+    },
+    resetTokenExpires: {
+        type: Date,
+        default: null
     }
 }, {timestamps: true});
 

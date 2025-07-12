@@ -49,3 +49,13 @@ export const findUserById = async(id) => {
         throw error;
     }
 };
+
+export const findUserByVerificationToken = async(token) => {
+    try{
+        const user = await User.findOne({verificationToken: token});
+        return user;
+    }
+    catch(error){
+        throw error;
+    }
+};

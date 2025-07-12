@@ -6,6 +6,7 @@ import ProblemDescription from "./pages/ProblemDescription/ProblemDescription"
 import HomePage from "./pages/HomePage/HomePage"
 import ProfilePage from "./pages/ProfilePage/ProfilePage"
 import { ToastContainer } from "react-toastify"
+import VerifyEmail from "./pages/verifyEmail Page/verifyEmail"
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Route path="/problems" element={<ProbelmsPage />}/>
       <Route path='/problems/:id' element={<ProblemDescription />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/verify-email/:token" element={<VerifyEmail />} />
     </Routes>
     <ToastContainer 
       position="top-right"
