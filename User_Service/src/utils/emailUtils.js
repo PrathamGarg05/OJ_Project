@@ -15,6 +15,7 @@ export const sendVerificationEmail = async(email, verificationLink) => {
         if(error){
             throw error;
         }
+        console.log(verificationLink);
         return data;
     }catch(error){
         throw error;
