@@ -8,4 +8,4 @@ export const myProfile = () => api.get('/users/me');
 
 export const logout = () => api.post('/users/logout');
 
-export const verifyEmail = (token) => api.post(`/users/verify-email?token=${token}`);
+export const verifyEmail = (token) => api.post(`/users/verify-email`, {token});
