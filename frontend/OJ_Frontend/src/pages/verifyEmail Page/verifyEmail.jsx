@@ -1,19 +1,22 @@
-import { useEffect } from "react";
+
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { verifyEmail } from "../../services/auth";
+import { toast } from "react-toastify";
 
 function VerifyEmail() {
     const [searchParams] = useSearchParams();
-    useEffect(() => {
-        const verifyEmailHandler = async () => {
-            const response = await verifyEmail(searchParams.get("token"));
-            console.log(response);
-            if(response.status === 200){
-                navigate("/login");
-            }
+    const verifyEmailHandler = async () => {
+        const response = await verifyEmail(searchParams.get("token"));
+        console.log(response);
+        if(response.status === 200){
+            toast.success("Email verified successfully");
+            navigate("/login");
         }
-        verifyEmailHandler();
-    }, []);
+        else{
+            toast.error("Email verification failed");
+        }
+    }
+    
 
     const navigate = useNavigate();
     return (
@@ -21,6 +24,7 @@ function VerifyEmail() {
             <h1 className="text-2xl font-bold">Verify Email</h1>
             <p className="text-lg">Please check your email for a verification link.</p>
             <p className="text-lg">If you don't see the email, please check your spam folder.</p>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => verifyEmailHandler()}>Verify Email</button>
             <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => navigate("/login")}>Login</button>
         </div>
     )
