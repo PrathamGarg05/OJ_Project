@@ -75,6 +75,12 @@ CodeNest follows a microservices architecture with the following components:
 - 📊 **Submission History** - Track your progress and performance
 - 🤖 **AI Code Review** - Get intelligent feedback on your solutions
 
+## 🖼️ Submission Flow
+<div align="center">
+  <img src="./codeNest-SubmissionFlow.png" alt="Submission Flow" width="800"/>
+  <p><em>Submission Flow of codeNest</em></p>
+</div>
+
 ---
 
 **Built with ❤️ using modern web technologies**
