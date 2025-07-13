@@ -65,7 +65,7 @@ CodeNest follows a microservices architecture with the following components:
 **Experience CodeNest Online Judge in Action!**
 
 - **🚀 Live Application**: [code-nest](https://www.code-nest.live/)
-- **📹 Demo Video**: [Watch Demo](https://drive.google.com/drive/folders/1yq2TMEWAtyThuJv1k-tURhPE6_0Dmd5K?usp=drive_link)
+- **📹 Demo Video**: [Watch Demo](https://www.loom.com/share/0b354c2d92534f84bafb236b6f5d92ec?sid=e5b216d1-e26a-4dad-97f0-921fbcdbb3e6)
 
 ### ✨ What You Can Try
 - 🔐 **User Registration & Login** - Create an account or use demo credentials
