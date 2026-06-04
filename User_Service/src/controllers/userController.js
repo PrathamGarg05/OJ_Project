@@ -27,7 +27,7 @@ export const login = async(req, res) => {
             maxAge: 1000*60*60,
             httpOnly: true,
             sameSite: 'none',
-            secure: false
+            secure: true
         });
         return successResponse(
             { user : { id: user._id, email: user.email,username:user.username, role: user.role}},
