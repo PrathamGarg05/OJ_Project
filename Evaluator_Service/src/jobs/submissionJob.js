@@ -11,8 +11,8 @@ export default class SubmissionJob{
         this.payload = payload;
     }
     handle = async (job) => {
-        console.log("job handler called", job.name);
-        console.log(this.payload);
+        // console.log("job handler called", job.name);
+        // console.log(this.payload);
         if(job) {
             const userId = this.payload.userId;
             const submissionId = this.payload._id;
@@ -24,13 +24,13 @@ export default class SubmissionJob{
                 const strategy = createExecutor(language);
                 if(strategy != null) {
                     const response = await strategy.execute(code, testcase);
-                    console.log(response);
+                    // console.log(response);
                     if(response.status == "Completed") {
-                        console.log("Code executed successfully");
-                        console.log(response);
+                        // console.log("Code executed successfully");
+                        // console.log(response);
                     } else {
-                        console.log("Code execution failed");
-                        console.log(response);
+                        // console.log("Code execution failed");
+                        // console.log(response);
                     }
                     await axios.post(`${SOCKET_SERVICE}/sendPayload`, {
                         userId: userId,
@@ -51,11 +51,11 @@ export default class SubmissionJob{
                 if(strategy != null) {
                     const response = await strategy.execute(code, testcases.data);
                     if(response.status == "Completed") {
-                        console.log("Code executed successfully");
-                        console.log(response);
+                        // console.log("Code executed successfully");
+                        // console.log(response);
                     } else {
-                        console.log("Code execution failed");
-                        console.log(response);
+                        // console.log("Code execution failed");
+                        // console.log(response);
                     }
                     await axios.post(`${SOCKET_SERVICE}/sendPayload`, {
                         userId: userId,
@@ -85,11 +85,11 @@ export default class SubmissionJob{
                         error : response?.error
                     });
                     if(response.status == "Completed") {
-                        console.log("Code executed successfully");
-                        console.log(response);
+                        // console.log("Code executed successfully");
+                        // console.log(response);
                     } else {
-                        console.log("Code execution failed");
-                        console.log(response);
+                        // console.log("Code execution failed");
+                        // console.log(response);
                     }
                 }
             }
@@ -97,7 +97,7 @@ export default class SubmissionJob{
         }
     };
     failed = (job) => {
-        console.log("job failed");
+        // console.log("job failed");
     };
 
 }

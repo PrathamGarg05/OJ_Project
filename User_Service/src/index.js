@@ -13,7 +13,6 @@ app.use(cors({
 }));
 
 app.use(cookieParser());
-
 app.use(express.json());
 app.use(express.raw());
 app.use(express.urlencoded({extended: true}));

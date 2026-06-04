@@ -8,3 +8,4 @@ export const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1' ;
 export const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY;
 export const SOCKET_SERVICE = process.env.SOCKET_SERVICE;
 export const PROBLEM_URL = process.env.PROBLEM_URL;
+export const REDIS_URL = process.env.REDIS_URL;

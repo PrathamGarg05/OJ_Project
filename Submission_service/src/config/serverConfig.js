@@ -8,3 +8,4 @@ export const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1' ;
 export const MONGO_URL = process.env.MONGO_URL;
 export const API_GATEWAY = process.env.API_GATEWAY;
 export const SOCKET_SERVICE = process.env.SOCKET_SERVICE;
+export const REDIS_URL = process.env.REDIS_URL;
