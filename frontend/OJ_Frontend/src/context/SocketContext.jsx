@@ -14,10 +14,10 @@ export const SocketProvider = ({ children }) => {
         if (!user?.id) return;
 
         // Initialize socket connection
-        socketRef.current = io("https://socket.code-nest.live", {
-            withCredentials: true,
-            transports: ["websocket"]
-        });
+        socketRef.current = io(import.meta.env.VITE_SOCKET_URL, {
+    withCredentials: true,
+    transports: ["websocket"]
+});
 
         socketRef.current.emit("setUserId", user.id);
 

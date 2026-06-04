@@ -11,9 +11,8 @@ const httpServer = createServer(app);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-const redisCache = new Redis({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
+const redisCache = new Redis(process.env.REDIS_URL, {
+    maxRetriesPerRequest: null
 });
 const io = new Server(httpServer, { 
     cors: {
