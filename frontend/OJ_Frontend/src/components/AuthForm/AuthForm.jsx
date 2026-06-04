@@ -134,6 +134,7 @@ function AuthForm({type = 'login'}) {
                             text={type == 'register' ? 'Register' : 'Login'}
                             styleType="primary"
                             style=" w-full hover:bg-blue-700 transition text-gray py-2 rounded-lg"
+                            
                         />
                     </div>
                     <div className= "text-sm text-center mt-4 text-gray-400">
