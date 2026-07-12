@@ -10,7 +10,8 @@ async function createContainer(image, cmd, memory = 1024 * 1024 * 1024, cpu = 1e
         AutoRemove: true,
         HostConfig: {
             Memory: memory,
-            NanoCpus: cpu
+            NanoCpus: cpu,
+            Binds: binds 
         }
 
     });
