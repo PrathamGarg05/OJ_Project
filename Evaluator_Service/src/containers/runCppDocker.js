@@ -15,16 +15,24 @@ class CppExecutor {
         let rawLogBuffer = [];
         let tempDir;
 
-        await pullImage(CPP_IMAGE);
-        const SHARED_TEMP_BASE = "/tmp/oj-submissions";
-        tempDir = path.join(SHARED_TEMP_BASE, `submission-${crypto.randomUUID()}`);
-        await fs.mkdir(tempDir, { recursive: true });
-        await fs.writeFile(path.join(tempDir, "main.cpp"), code, "utf-8");
-await Promise.all(
-            testcases.map((tc, idx) =>
-                fs.writeFile(path.join(tempDir, `input_${idx}.txt`), tc.input, "utf-8")
-            )
-        );
+        console.log("CHECKPOINT 1: before pullImage");
+    await pullImage(CPP_IMAGE);
+    console.log("CHECKPOINT 2: after pullImage");
+
+    tempDir = path.join(SHARED_TEMP_BASE, `submission-${crypto.randomUUID()}`);
+    await fs.mkdir(tempDir, { recursive: true });
+    console.log("CHECKPOINT 3: after mkdir, tempDir =", tempDir);
+
+    await fs.writeFile(path.join(tempDir, "main.cpp"), code, "utf-8");
+    console.log("CHECKPOINT 4: after writing main.cpp");
+
+    await Promise.all(
+        testcases.map((tc, idx) =>
+            fs.writeFile(path.join(tempDir, `input_${idx}.txt`), tc.input, "utf-8")
+        )
+    );
+    console.log("CHECKPOINT 5: after writing testcase files");
+
 
         const script = `
 g++ -std=c++17 -O2 /code/main.cpp -o /code/main
@@ -41,14 +49,16 @@ do
 done
 `;
 
-        const cppDocker = await createContainer(
-            CPP_IMAGE,
-            ['sh', '-c', script],
-            [`${tempDir}:/code`]
-        );
+        console.log("CHECKPOINT 6: before createContainer");
+    const cppDocker = await createContainer(
+        CPP_IMAGE,
+        ['sh', '-c', script],
+        [`${tempDir}:/code`]
+    );
+    console.log("CHECKPOINT 7: after createContainer");
 
-        await cppDocker.start();
-        console.log("Started docker container");
+    await cppDocker.start();
+    console.log("Started docker container");
 
         const loggerStream = await cppDocker.logs({ stderr: true, stdout: true, timestamps: false, follow: true });
 
