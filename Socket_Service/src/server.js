@@ -5,6 +5,8 @@ import {Redis} from 'ioredis';
 import dotenv from 'dotenv';
 dotenv.config();
 
+const USER_SOCKET_TTL_SECONDS = 60 * 60;
+
 const app = express();
 const httpServer = createServer(app);
 
@@ -24,8 +26,15 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
   socket.on("setUserId", async (userId) => {
-    await redisCache.set(userId, socket.id);
-  })
+        socket.data.userId = userId;
+        await redisCache.set(userId, socket.id, "EX", USER_SOCKET_TTL_SECONDS);
+    });
+
+    socket.on("disconnect", async () => {
+        if (socket.data.userId) {
+            await redisCache.del(socket.data.userId);
+        }
+    });
 });
 
 app.post('/sendPayload' , async(req,res) => {
