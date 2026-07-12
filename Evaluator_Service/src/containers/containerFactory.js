@@ -1,8 +1,8 @@
 import Docker from 'dockerode';
 
-async function createContainer(image, cmd, memory = 1024 * 1024 * 1024, cpu = 1e9) {
-    const docker = new Docker();
+const docker = new Docker(); // single reused client, not one per call
 
+async function createContainer(image, cmd, binds = [], memory = 1024 * 1024 * 1024, cpu = 1e9) {
     const container = await docker.createContainer({
         Image: image,
         Cmd: cmd,
@@ -11,9 +11,8 @@ async function createContainer(image, cmd, memory = 1024 * 1024 * 1024, cpu = 1e
         HostConfig: {
             Memory: memory,
             NanoCpus: cpu,
-            Binds: binds 
+            Binds: binds
         }
-
     });
 
     return container;
