@@ -50,6 +50,7 @@ services:
       - Socket_Service
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/oj-submissions:/tmp/oj-submissions
 
 volumes:
   redis_data:

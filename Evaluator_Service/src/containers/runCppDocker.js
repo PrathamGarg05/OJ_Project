@@ -16,8 +16,8 @@ class CppExecutor {
         let tempDir;
 
         await pullImage(CPP_IMAGE);
-
-        tempDir = path.join(os.tmpdir(), `submission-${crypto.randomUUID()}`);
+        const SHARED_TEMP_BASE = "/tmp/oj-submissions";
+        tempDir = path.join(SHARED_TEMP_BASE, `submission-${crypto.randomUUID()}`);
         await fs.mkdir(tempDir, { recursive: true });
         await fs.writeFile(path.join(tempDir, "main.cpp"), code, "utf-8");
 await Promise.all(
