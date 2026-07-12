@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import os from "os";
 import crypto from "crypto";
+const SHARED_TEMP_BASE = "/tmp/oj-submissions";
 
 import createContainer from "./containerFactory.js";
 import decodeDockerStream from "./dockerHelper.js";
