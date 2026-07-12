@@ -6,11 +6,12 @@ async function createContainer(image, cmd, memory = 1024 * 1024 * 1024, cpu = 1e
     const container = await docker.createContainer({
         Image: image,
         Cmd: cmd,
-        AttachStdin: true,
+        AttachStdin: false,
         AttachStdout: true,
         AttachStderr: true,
         Tty: false,
-        OpenStdin: true,  //keep input stream open even if no interaction is there
+        OpenStdin: false,
+        AutoRemove: true,
         HostConfig: {
             Memory: memory,
             NanoCpus: cpu

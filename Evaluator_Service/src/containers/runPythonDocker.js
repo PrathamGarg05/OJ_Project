@@ -5,11 +5,11 @@ import { PYTHON_IMAGE } from "../utils/constants.js";
 import decodeDockerStream from "./dockerHelper.js";
 import pullImage from "./pullImage.js";
 import { outputMatcher } from "../utils/outputMatcher.js";
-import { codeResponseHelper } from "./codeResponseHelper.js";
+import { MAX_DOCKER_LOG_SIZE, codeResponseHelper } from "./codeResponseHelper.js";
 
 class PythonExecutor {
     execute = async(code, testcases) => {
-        const rawLogBuffer = [];
+        let rawLogBuffer = Buffer.alloc(0);
 
         await pullImage(PYTHON_IMAGE);
 
@@ -42,7 +42,10 @@ fi
 
         // attach events on stream objects to stard or end reading
         loggerStream.on('data', (chunk) => {
-            rawLogBuffer.push(chunk); 
+            rawLogBuffer = Buffer.concat([rawLogBuffer, chunk]);
+            if (rawLogBuffer.length > MAX_DOCKER_LOG_SIZE) {
+                loggerStream.emit('error', new Error('Docker log output exceeded the configured limit'));
+            }
         }); 
 
         try{
@@ -67,7 +70,11 @@ fi
             }
             return err;
         } finally{
-            await pythonDocker.remove();
+            try {
+                await pythonDocker.remove();
+            } catch (removeError) {
+                console.log("Container remove skipped:", removeError?.message || removeError);
+            }
         }
     };
 }
