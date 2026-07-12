@@ -9,7 +9,8 @@ import { MAX_DOCKER_LOG_SIZE, codeResponseHelper } from "./codeResponseHelper.js
 
 class CppExecutor {
     execute = async(code,testcases) => {
-        let rawLogBuffer = Buffer.alloc(0);
+        let rawLogBuffer = [];
+
 
         await pullImage(CPP_IMAGE);
 
@@ -42,12 +43,12 @@ fi
 
         // attach events on stream objects to stard or end reading
         loggerStream.on('data', (chunk) => {
-            console.log("Received chunk, length:", chunk.length);
-            rawLogBuffer = Buffer.concat([rawLogBuffer, chunk]);
-            if (rawLogBuffer.length > MAX_DOCKER_LOG_SIZE) {
+            rawLogBuffer.push(chunk);
+            const totalSize = rawLogBuffer.reduce((sum, c) => sum + c.length, 0);
+            if (totalSize > MAX_DOCKER_LOG_SIZE) {
                 loggerStream.emit('error', new Error('Docker log output exceeded the configured limit'));
             }
-        }); 
+        });
 
         try{
             const codeResponse = await codeResponseHelper(loggerStream, rawLogBuffer, decodeDockerStream, 2000);
