@@ -15,14 +15,18 @@ class CppExecutor {
         await pullImage(CPP_IMAGE);
 
         let script = `
-echo "${code.replace(/"/g, '\\"')}" > main.cpp
-g++ main.cpp -o main
-if [ $? -ne 0 ]; then
-  echo "__COMPILE_ERROR__"
-else
-  ${testcases.map(tc => `echo '${tc.input}' | ./main; echo "---"`).join('\n')}
-fi
-`;
+            cat > main.cpp << 'EOF'
+            ${code}
+            EOF
+
+            g++ main.cpp -o main
+
+            if [ $? -ne 0 ]; then
+            echo "__COMPILE_ERROR__"
+            else
+            ${testcases.map(tc => `echo '${tc.input}' | ./main; echo "---"`).join('\n')}
+            fi
+            `;
 
         const cppDocker = await createContainer(CPP_IMAGE, 
             ['sh', 
