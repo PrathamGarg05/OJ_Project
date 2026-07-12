@@ -27,12 +27,18 @@ await Promise.all(
         );
 
         const script = `
-g++ /code/main.cpp -o /code/main
+g++ -std=c++17 -O2 /code/main.cpp -o /code/main
+
 if [ $? -ne 0 ]; then
-  echo "__COMPILE_ERROR__"
-else
-  ${testcases.map((tc, idx) => `/code/main < /code/input_${idx}.txt; echo "---"`).join('\n')}
+    echo "__COMPILE_ERROR__"
+    exit 1
 fi
+
+for file in /code/input_*.txt
+do
+    /code/main < "$file"
+    echo "---"
+done
 `;
 
         const cppDocker = await createContainer(
@@ -46,14 +52,19 @@ fi
 
         const loggerStream = await cppDocker.logs({ stderr: true, stdout: true, timestamps: false, follow: true });
 
-        loggerStream.on('data', (chunk) => {
-            rawLogBuffer.push(chunk);
-            const totalSize = rawLogBuffer.reduce((sum, c) => sum + c.length, 0);
-            if (totalSize > MAX_DOCKER_LOG_SIZE) {
-                loggerStream.emit('error', new Error('Docker log output exceeded the configured limit'));
-            }
-        });
+        let totalLogSize = 0;
 
+loggerStream.on("data", (chunk) => {
+    rawLogBuffer.push(chunk);
+    totalLogSize += chunk.length;
+
+    if (totalLogSize > MAX_DOCKER_LOG_SIZE) {
+        loggerStream.emit(
+            "error",
+            new Error("Docker log output exceeded the configured limit")
+        );
+    }
+});
         try {
             const codeResponse = await codeResponseHelper(loggerStream, rawLogBuffer, decodeDockerStream, 2000);
             const { results, verdict, totalC, wrongC } = outputMatcher(codeResponse, testcases);
@@ -76,8 +87,9 @@ fi
                 total: testcases.length,
             };
         } finally {
-            await cppDocker.remove();
-            // Critical: clean up the temp dir, or these accumulate forever — same leak pattern as before, just on disk instead of containers
+            await cppDocker.remove({
+    force: true
+});
             if (tempDir) {
                 await fs.rm(tempDir, { recursive: true, force: true }).catch(() => {});
             }
