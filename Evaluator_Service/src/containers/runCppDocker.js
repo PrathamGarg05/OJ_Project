@@ -65,17 +65,20 @@ fi
             };
 
         } catch(err){
-            if(err.verdict === "TLE"){
-                await cppDocker.kill();
-            }
-            return err;
-        } finally{
-            try {
-                await cppDocker.remove();
-            } catch (removeError) {
-                console.log("Container remove skipped:", removeError?.message || removeError);
-            }
-        }
+    console.error("Execution failed:", err);
+    if(err.verdict === "TLE"){
+        await cppDocker.kill();
+    }
+    return {
+        status: "Failed",
+        verdict: err.verdict || "IE",
+        error: err.message || String(err),
+        passed: 0,
+        total: testcases.length,
+    };
+} finally{
+    await cppDocker.remove();
+}
     };
 }
 
