@@ -21,7 +21,9 @@ export const codeResponseHelper = async(loggerStream, rawLogBuffer, decodeDocker
         loggerStream.on('end', () => {
             cleanup();
 
-            const completeBuffer = rawLogBuffer;
+            console.log("Stream ended. Total chunks:", rawLogBuffer.length);
+            const completeBuffer = Buffer.concat(rawLogBuffer);
+            console.log("Complete buffer length:", completeBuffer.length, "content:", completeBuffer.toString('utf-8'));
             const decodeStream = decodeDockerStream(completeBuffer);
 
             const stdout = decodeStream.stdout.toString();

@@ -42,6 +42,7 @@ fi
 
         // attach events on stream objects to stard or end reading
         loggerStream.on('data', (chunk) => {
+            console.log("Received chunk, length:", chunk.length);
             rawLogBuffer = Buffer.concat([rawLogBuffer, chunk]);
             if (rawLogBuffer.length > MAX_DOCKER_LOG_SIZE) {
                 loggerStream.emit('error', new Error('Docker log output exceeded the configured limit'));
