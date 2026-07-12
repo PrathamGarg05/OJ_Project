@@ -17,7 +17,7 @@ function ProbelmList({problems}){
     const isSolved = (problemId) => {return solvedProblems.includes(problemId)};
 
     useEffect(() => {
-        if(user){
+        if(user?.id){
             getSolvedProblems(user.id);
         }
     }, [user]);
