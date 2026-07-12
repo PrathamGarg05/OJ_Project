@@ -21,7 +21,9 @@ userRouter.get('/', authenticateToken(JWT_SECRET), roleAuthorization("admin"), g
 userRouter.post('/logout', authenticateToken(JWT_SECRET), (req,res) => {
     res.clearCookie('token', {
         httpOnly: true,
-        sameSite: 'lax'
+        sameSite: 'none',
+        secure: true,
+        path: '/'
     });
     res.status(200).json({message: "Logged out successfully"});
 });
