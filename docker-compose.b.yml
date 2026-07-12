@@ -1,27 +1,33 @@
 version: '3.8'
-services:
 
+services:
   redis:
     image: redis:latest
-    ports:
-      - "6379:6379"
     container_name: redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
 
   Socket_Service:
     image: socket_service
     build:
       context: ./Socket_Service
       dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
       - "3005:3005"
     env_file:
       - ./Socket_Service/.env
+    depends_on:
+      - redis
 
   Submission_Service:
     image: submission_service
     build:
       context: ./Submission_Service
       dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
       - "7000:7000"
     env_file:
@@ -35,8 +41,7 @@ services:
     build:
       context: ./Evaluator_Service
       dockerfile: Dockerfile
-    ports:
-      - "3002:3002"
+    restart: unless-stopped
     env_file:
       - ./Evaluator_Service/.env
     depends_on:
@@ -45,3 +50,6 @@ services:
       - Socket_Service
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  redis_data:
