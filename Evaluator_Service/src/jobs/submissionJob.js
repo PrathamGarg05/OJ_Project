@@ -73,6 +73,7 @@ export default class SubmissionJob{
             }
             else{
                 const testcases = await getTestcases(this.payload.problemId);
+                console.log("Testcases fetched:", testcases.data?.length, testcases.data);
                 const strategy = createExecutor(language);
                 if(strategy != null) {
                     const response = await strategy.execute(code,testcases.data);
